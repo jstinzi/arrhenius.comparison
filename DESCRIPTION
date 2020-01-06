@@ -1,0 +1,36 @@
+Package: arrhenius.comparison
+Type: Package
+Title: Comparing versions of the modified Arrhenius equation
+Version: 1.0.0
+Date: 2019-10-21
+Authors@R: c(
+    person("Joseph", "Stinziano", email = "josephstinziano@gmail.com",
+    role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7628-4201")),
+    person("Sandra", "Kerbler", email = "sandra.m.kerbler@gmail.com", role = "aut"),
+    person("Bridget", "Murphy", email = "bmurph26@uwo.ca", role = "aut"))
+Author: Joseph Stinziano [aut, cre]
+Maintainer: Joseph Stinziano <josephstinziano@gmail.com>
+Description: Provides equations to model and compare the modified Arrhenius
+    equation in Medlyn et al. 2002, with the newly derived version.
+URL: https://github.com/jstinzi/arrhenius.comparison
+BugReports: https://github.com/jstinzi/arrhenius.comparison/issues
+License: MIT
+Depends: R (>= 3.6.0)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.1
+Suggests: knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
+Imports: dplyr (>= 0.8.3),
+    ggplot2 (>= 3.2.1),
+    graphics (>= 3.6.1),
+    grDevices (>= 3.6.1),
+    minpack.lm (>= 1.2-1),
+    nlme (>= 3.1-140),
+    pkgnet (>= 0.4.0),
+    rlang (>= 0.4.2),
+    stats (>= 3.6.1),
+    tidyr (>= 1.0.0),
+    utils (>= 3.6.1)
