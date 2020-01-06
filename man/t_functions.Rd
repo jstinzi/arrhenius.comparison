@@ -4,6 +4,7 @@
 \alias{Arrh_medlyn}
 \alias{Arrh_new}
 \alias{Q10_funct}
+\alias{Arrh_base}
 \title{Temperature response functions}
 \usage{
 Arrh_medlyn(k25, delS, Ea, Hd, Temp)
@@ -11,6 +12,8 @@ Arrh_medlyn(k25, delS, Ea, Hd, Temp)
 Arrh_new(k25, delS, Ea, Hd, Temp)
 
 Q10_funct(k25, Q10, Temp)
+
+Arrh_base(k25, Ea, Temp)
 }
 \arguments{
 \item{k25}{Rate of process at 25 Celsius}
