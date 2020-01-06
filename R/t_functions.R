@@ -32,3 +32,9 @@ Arrh_new <- function(k25, delS, Ea, Hd, Temp){
 Q10_funct <- function(k25, Q10, Temp){
   k25 * Q10 ^ ( (Temp - 298.15) / 10)
 }
+
+#' @rdname t_functions
+#' @export
+Arrh_base <- function(k25, Ea, Temp){
+  k25 * exp((Ea*(Temp - 298.15))/(298.15*0.008314*Temp))
+}
