@@ -73,6 +73,8 @@ data_p <- calculate_p(G25 = 42.75,
                       Jmax_Ea_n = pars_j$Ea[i])
 data_phys[[i]] <- cbind(data_r, data_p)
 }
+#Test
+data_phys
 
 modelled <- list(NULL)
 for(i in 1:length(data_phys)){
