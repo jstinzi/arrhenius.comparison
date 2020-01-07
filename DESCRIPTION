@@ -23,14 +23,5 @@ Suggests: knitr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
-Imports: dplyr (>= 0.8.3),
-    ggplot2 (>= 3.2.1),
-    graphics (>= 3.6.1),
-    grDevices (>= 3.6.1),
-    minpack.lm (>= 1.2-1),
-    nlme (>= 3.1-140),
-    pkgnet (>= 0.4.0),
-    rlang (>= 0.4.2),
-    stats (>= 3.6.1),
-    tidyr (>= 1.0.0),
+Imports: stats (>= 3.6.1),
     utils (>= 3.6.1)
