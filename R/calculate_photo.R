@@ -6,8 +6,9 @@
 #' @param alpha 
 #' @param g0 
 #' @param g1 
-#' @param Oi 
+#' @param leaf_area
 #' @param phi 
+#' @param time_step
 #'
 #' @return
 #' @export
@@ -21,17 +22,18 @@ calculate_photo <- function(data_phys, #physiology dataframe
                                             leaf_respiration = "leaf_respiration",
                                             root_respiration = "root_respiration",
                                             shoot_respiration = "shoot_respiration",
-                                            total_respiration = "total_respiration",
+                                            total_respiration_plant = "total_respiration_plant",
                                             Ca = "Ca",
                                             Qin = "Qin",
                                             VPD = "VPD",
                                             Temp = "Temp",
                                             Vcmax = "Vcmax"),
-                            alpha,
-                            g0,
-                            g1,
-                            Oi,
-                            phi
+                            alpha = 0.8,
+                            g0 = 0.0225,
+                            g1 = 7.7527,
+                            leaf_area,
+                            phi,
+                            time_step
                             ){
   #Set variable names
   #Physiology
@@ -42,7 +44,7 @@ calculate_photo <- function(data_phys, #physiology dataframe
   data_phys$leaf_respiration <- data_phys[, varnames$leaf_respiration]
   data_phys$root_respiration <- data_phys[, varnames$root_respiration]
   data_phys$shoot_respiration <- data_phys[, varnames$shoot_respiration]
-  data_phys$total_respiration <- data_phys[, varnames$total_respiration]
+  data_phys$total_respiration_plant <- data_phys[, varnames$total_respiration_plant]
   #Environment
   data_env$Ca <- data_env[, varnames$Ca]
   data_env$Qin <- data_env[, varnames$Qin]
@@ -51,9 +53,15 @@ calculate_photo <- function(data_phys, #physiology dataframe
   
   #Create empty output dataframe
   output <- data.frame(cbind(rep(0, nrow(data_phys)),
-                             ))
+                             rep(0, nrow(data_phys)),
+                             rep(0, nrow(data_phys)),
+                             rep(0, nrow(data_phys)),
+                             rep(0, nrow(data_phys)),
+                             rep(0, nrow(data_phys)),
+                             rep(0, nrow(data_phys)),
+                             rep(0, nrow(data_phys))))
   colnames(output) <- c("Wc", "Wj", "Ci", "gs",
-                        "A_gross", "A_net_leaf",
+                        "A_gross", "A_gross_plant", "A_net_leaf",
                         "A_net_plant")
   output <- cbind(data_env, data_phys, output)
   
@@ -63,41 +71,41 @@ calculate_photo <- function(data_phys, #physiology dataframe
   
   #Need nested loops - j loop for minimization and system closure
   #i loop for output data
-  
+  for(i in 1:nrow(data_phys)){
   #Initial guess for Ci
   Ci1 <- data_env$Ca[i] * 0.99
-  
+  Ci <- NULL
+  Ci[1] <- Ci1
+  gs <- NULL
+  convergence <- NULL
+  Wc <- NULL
+  Wj <- NULL
+  A_gross <- NULL
+  A_net_leaf <- NULL
+  err <- NULL
   #Need to start loop here
-  for(j in 1:1000){
-  if(j == 1){
-    Ci[j] <- Ci1
-  }
-  Wc[i] <- 
-    data_phys$Vcmax[i] * (Ci[j] - data_phys$GammaStar[i]) / 
-    (Ci[j] + data_phys$Km[i])
+  for(j in 2:1000){
+  Wc <- 
+    data_phys$Vcmax[i] * (Ci[j - 1] - data_phys$GammaStar[i]) / 
+    (Ci[j - 1] + data_phys$Km[i])
   
-  Wj[i] <-
+  Wj <-
     min(data_phys$Jmax[i], alpha * phi * data_env$Qin[i] * 
-          (Ci[j] - data_phys$GammaStar[i]) / 
-          (2 * data_phys$GammaStar[i] + Ci[j]))
+          (Ci[j - 1] - data_phys$GammaStar[i]) / 
+          (2 * data_phys$GammaStar[i] + Ci[j - 1]))
   #Calculate gross photosynthesis as the minimum of Wc, Wj
-  A_gross[i] <- min(Wc, Wj)
+  A_gross <- min(Wc, Wj)
   
-  A_net_leaf[i] <- A_gross[i] - data_phys$leaf_respiration[i]
+  A_net_leaf <- A_gross - data_phys$leaf_respiration[i]
   
-  gs[i] <- g0 + 1.6 * ( 1 + g1 / sqrt(data_env$VPD[i])) * (A_net_leaf[i] / data_env$Ca[i])
+  gs <- g0 + 1.6 * ( 1 + g1 / sqrt(data_env$VPD[i])) * (A_net_leaf / data_env$Ca[i])
+  Ci[j] <- data_env$Ca[i] - A_net_leaf / (gs / 1.6)
   
-  Ci[j] <- data_env$Ca[i] - A_net_leaf[i] / (gs[i] / 1.6)
+  err = Ci[j] - Ci[j - 1]
   
-  if(j == 1){
-    err = Ci1 - Ci[j]
-  } else {
-    err = Ci[j] - Ci[j - 1]
-  }
-  
-  if(err < 0.01 | j == 1000){
-    Ci[i] <- Ci[j]
-  }
+  #if(err < 0.01 | j == 1000){
+  #  Ci[i] <- Ci[j]
+  #}
   
   if(err < 0.01 & j <= 1000){
     convergence[i] <- TRUE
@@ -105,28 +113,33 @@ calculate_photo <- function(data_phys, #physiology dataframe
     convergence[i] <- FALSE
   }
   
-  }#End J loop
+  }#End J loop - j loop works
   
-  A_net_plant <- A_net_leaf - 
-    data_phys$root_respiration - data_phys$shoot_respiration
+  output$Wc[i] <- Wc
+  output$Wj[i] <- Wj
+  output$A_gross[i] <- A_gross
+  output$A_gross_plant[i] <- A_gross * leaf_area
+  output$gs[i] <- gs
+  output$Ci[i] <- Ci[j]
   
-  #Pseudo code below for calculations
-  #Timestep calculations
-  A_gross = ifelse(Qinc > 0, min(Wc, Wj), 0)
+  output$A_net_leaf[i] <- A_net_leaf
+  output$A_net_plant[i] <- A_net_leaf * leaf_area - 
+    data_phys$root_respiration_plant[i] - data_phys$shoot_respiration_plant[i]
   
-  R = ifelse(Qinc > 0, - r_day, - r_dark)
+}#End I loop
+
+  #Daily sums in g/day
+  daily_C_plant <- sum(output$A_net_plant * time_step) * 12.01 / 1000000
   
-  A_net_leaf = A_gross - R
+  daily_photosynthesis <- sum(output$A_gross_plant * time_step) * 12.01 / 1000000
   
-  A_net_plant = A_net - r_root - r_shoot
+  daily_respiration <- sum(output$total_respiration_plant * time_step) * 12.01 / 1000000
+  output2 <- data.frame(cbind(daily_C_plant,
+                              daily_photosynthesis,
+                              daily_respiration))
   
-  #Daily sums
-  daily_C_plant = sum(A_net_plant * time_step)
-  
-  daily_photosynthesis = sum(A_gross * time_step)
-  
-  daily_respiration = sum(r_total * time_step)
-  
-  #Output into 2-element list with daily total and hourly values
-  
+  out <- list(NULL)
+  out[[1]] <- output
+  out[[2]] <- output2  
+  return(out)
 }

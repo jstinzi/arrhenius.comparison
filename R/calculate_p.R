@@ -97,7 +97,7 @@ calculate_p <- function(G25,
                         Temp = Temp)
   
   #Create dataframe output for photosynthetic parameters
-  df_photo <- data.frame(cbind(GammaStar, Jmax_medlyn, Jmax_new,
+  df_p <- data.frame(cbind(GammaStar, Jmax_medlyn, Jmax_new,
                                 Km, Vcmax_medlyn, Vcmax_new, Temp))
   
   #Return photosynthetic parameters

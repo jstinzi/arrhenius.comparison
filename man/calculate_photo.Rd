@@ -9,13 +9,14 @@ calculate_photo(
   data_env,
   varnames = list(GammaStar = "GammaStar", Jmax = "Jmax", Km = "Km", leaf_respiration =
     "leaf_respiration", root_respiration = "root_respiration", shoot_respiration =
-    "shoot_respiration", total_respiration = "total_respiration", Ca = "Ca", Qin = "Qin",
-    VPD = "VPD", Temp = "Temp", Vcmax = "Vcmax"),
-  alpha,
-  g0,
-  g1,
-  Oi,
-  phi
+    "shoot_respiration", total_respiration_plant = "total_respiration_plant", Ca = "Ca",
+    Qin = "Qin", VPD = "VPD", Temp = "Temp", Vcmax = "Vcmax"),
+  alpha = 0.8,
+  g0 = 0.0225,
+  g1 = 7.7527,
+  leaf_area,
+  phi,
+  time_step
 )
 }
 \arguments{
@@ -31,9 +32,9 @@ calculate_photo(
 
 \item{g1}{}
 
-\item{Oi}{}
-
 \item{phi}{}
+
+\item{time_step}{}
 }
 \value{
 
