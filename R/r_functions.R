@@ -15,12 +15,13 @@
 #' @param root_mass Root mass in g
 #' @param shoot_mass Shoot mass in g
 #'
-#' @return Calculates total respiration
+#' @return Calculates respiration separately for each tissue type on an area
+#' or mass basis, as well as a total plant basis.
 #' @rdname r_functions
 #' @export
 calculate_r <- function(data,
                         varnames = list(Qin = "Qin",
-                                        Temp = "Temp",
+                                        Temp = "Temp"),
                         leaf_Q10_day,
                         leaf_Q10_night,
                         root_Q10,
@@ -31,7 +32,7 @@ calculate_r <- function(data,
                         shoot_k25,
                         leaf_area,
                         root_mass,
-                        shoot_mass)){
+                        shoot_mass){
   #Set variable names
   data$Qin <- data[, varnames$Qin]
   data$Temp <- data[, varnames$Temp]
@@ -41,39 +42,48 @@ calculate_r <- function(data,
                      rep(0, nrow(data)),
                      rep(0, nrow(data)),
                      rep(0, nrow(data)),
+                     rep(0, nrow(data)),
+                     rep(0, nrow(data)),
+                     rep(0, nrow(data)),
                      data$Temp)
   
   #Add column names
-  colnames(df_resp) <- c("leaf_respiration",
-                         "root_respiration",
-                         "shoot_respiration",
-                         "total_respiration",
-                         "Temp")
+  colnames(df_r) <- c("leaf_respiration",
+                      "root_respiration",
+                      "shoot_respiration",
+                      "leaf_respiration_plant",
+                      "root_respiration_plant",
+                      "shoot_respiration_plant",
+                      "total_respiration_plant",
+                      "Temp")
   for(i in 1:nrow(data)){
   #Calculate leaf respiration
   df_r$leaf_respiration[i] <- if(data$Qin[i] > 0){
     Q10_funct(k25 = leaf_k25_day,
               Q10 = leaf_Q10_day,
-              Temp = data$Temp[i]) * leaf_area
+              Temp = data$Temp[i])
   } else {
     Q10_funct(k25 = leaf_k25_night,
               Q10 = leaf_Q10_night,
-              Temp = data$Temp[i]) * leaf_area
-    }
+              Temp = data$Temp[i])
+  }
+  df_r$leaf_respiration_plant[i] <- df_r$leaf_respiration[i] * leaf_area
   #Calculate root respiration
   df_r$root_respiration[i] <- Q10_funct(k25 = root_k25,
                          Q10 = root_Q10,
-                         Temp = data$Temp[i]) * root_mass
+                         Temp = data$Temp[i])
+  df_r$root_respiration_plant[i] <- df_r$root_respiration[i] * root_mass
   #Calculate shoot respiration
   df_r$shoot_respiration[i] <- Q10_funct(k25 = shoot_k25,
                          Q10 = shoot_Q10,
-                         Temp = data$Temp[i]) * shoot_mass
+                         Temp = data$Temp[i])
+  df_r$shoot_respiration_plant[i] <- df_r$shoot_respiration[i] * shoot_mass
   }
   
   #Calculate total respiration
-  df_r$total_respiration <- leaf_respiration + 
-    root_respiration + shoot_respiration
+  df_r$total_respiration_plant <- df_r$leaf_respiration_plant + 
+    df_r$root_respiration_plant + df_r$shoot_respiration_plant
   
   #Return dataframe with respiration values
-  return(df_resp)
+  return(df_r)
 }

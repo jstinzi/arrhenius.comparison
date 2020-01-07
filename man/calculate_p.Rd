@@ -2,54 +2,95 @@
 % Please edit documentation in R/calculate_p.R
 \name{calculate_p}
 \alias{calculate_p}
-\title{Title}
+\title{Calculating photosynthetic parameters}
 \usage{
 calculate_p(
   G25,
   G_Ea,
-  Jmax25,
-  Jmax_dS,
-  Jmax_Ea,
-  Jmax_Hd,
+  Jmax25_m,
+  Jmax_dS_m,
+  Jmax_Ea_m,
+  Jmax_Hd_m,
+  Jmax25_n,
+  Jmax_dS_n,
+  Jmax_Ea_n,
+  Jmax_Hd_n,
   Km25,
   Km_Ea,
   Temp,
-  Vcmax25,
-  Vcmax_dS,
-  Vcmax_Ea,
-  Vcmax_Hd
+  Vcmax25_m,
+  Vcmax_dS_m,
+  Vcmax_Ea_m,
+  Vcmax_Hd_m,
+  Vcmax25_n,
+  Vcmax_dS_n,
+  Vcmax_Ea_n,
+  Vcmax_Hd_n
 )
 }
 \arguments{
-\item{G25}{}
+\item{G25}{Photorespiratory CO2 compensation point (umol mol-1)}
 
-\item{G_Ea}{}
+\item{G_Ea}{Activation energy of G25 (kJ mol-1)}
 
-\item{Jmax25}{}
+\item{Jmax25_m}{Maximum electron transport rate at 25 Celsius for the
+Medlyn et al. 2002 modified Arrhenius model}
 
-\item{Jmax_dS}{}
+\item{Jmax_dS_m}{Entropy parameter of Jmax (kJ mol-1) for the
+Medlyn et al. 2002 modified Arrhenius model}
 
-\item{Jmax_Ea}{}
+\item{Jmax_Ea_m}{Activation energy of Jmax (kJ mol-1) for the
+Medlyn et al. 2002 modified Arrhenius model}
 
-\item{Jmax_Hd}{}
+\item{Jmax_Hd_m}{Deactivation energy of Jmax (kJ mol-1) for the
+Medlyn et al. 2002 modified Arrhenius model}
 
-\item{Km25}{}
+\item{Jmax25_n}{Maximum electron transport rate at 25 Celsius for the
+rederived modified Arrhenius model}
 
-\item{Km_Ea}{}
+\item{Jmax_dS_n}{Entropy parameter of Jmax (kJ mol-1) for the
+rederived modified Arrhenius model}
 
-\item{Temp}{}
+\item{Jmax_Ea_n}{Activation energy of Jmax (kJ mol-1) for the
+rederived modified Arrhenius model}
 
-\item{Vcmax25}{}
+\item{Jmax_Hd_n}{Deactivation energy of Jmax (kJ mol-1) for the
+rederived modified Arrhenius model}
 
-\item{Vcmax_dS}{}
+\item{Km25}{Michaelis-Menten coefficient for rubisco at 25 Celsius}
 
-\item{Vcmax_Ea}{}
+\item{Km_Ea}{Activation energy of Km (kJ mol-1)}
 
-\item{Vcmax_Hd}{}
+\item{Temp}{Temperature in K}
+
+\item{Vcmax25_m}{Maximum rubisco carboxylation rate at 25 Celsius for the
+Medlyn et al. 2002 modified Arrhenius model}
+
+\item{Vcmax_dS_m}{Entropy parameter of Vcmax (kJ mol-1) for the
+Medlyn et al. 2002 modified Arrhenius model}
+
+\item{Vcmax_Ea_m}{Activation energy of Vcmax (kJ mol-1) for the
+Medlyn et al. 2002 modified Arrhenius model}
+
+\item{Vcmax_Hd_m}{Deactivation energy of Vcmax (kJ mol-1) for the
+Medlyn et al. 2002 modified Arrhenius model}
+
+\item{Vcmax25_n}{Maximum rubisco carboxylation rate at 25 Celsius for the
+rederived modified Arrhenius model}
+
+\item{Vcmax_dS_n}{Entropy parameter of Vcmax (kJ mol-1) for the
+rederived modified Arrhenius model}
+
+\item{Vcmax_Ea_n}{Activation energy of Vcmax (kJ mol-1) for the
+rederived modified Arrhenius model}
+
+\item{Vcmax_Hd_n}{Deactivation energy of Vcmax (kJ mol-1) for the
+rederived modified Arrhenius model}
 }
 \value{
-
+Calculates photosynthetic parameters for the Farquhar et al. (1980)
+model of photosynthesis.
 }
 \description{
-Title
+Calculating photosynthetic parameters
 }

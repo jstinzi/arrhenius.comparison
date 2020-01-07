@@ -1,3 +1,18 @@
+#' Title
+#'
+#' @param data_phys 
+#' @param data_env 
+#' @param varnames 
+#' @param alpha 
+#' @param g0 
+#' @param g1 
+#' @param Oi 
+#' @param phi 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_photo <- function(data_phys, #physiology dataframe
                             data_env, #environmental dataframe
                             varnames = list(GammaStar = "GammaStar",

@@ -5,26 +5,38 @@
 \title{Functions for calculating respiration}
 \usage{
 calculate_r(
-  leaf_Q10,
+  data,
+  varnames = list(Qin = "Qin", Temp = "Temp"),
+  leaf_Q10_day,
+  leaf_Q10_night,
   root_Q10,
   shoot_Q10,
-  leaf_k25,
+  leaf_k25_day,
+  leaf_k25_night,
   root_k25,
   shoot_k25,
   leaf_area,
   root_mass,
-  shoot_mass,
-  Temp
+  shoot_mass
 )
 }
 \arguments{
-\item{leaf_Q10}{Leaf thermal sensitivity}
+\item{data}{Dataframe with temperature and light data}
+
+\item{varnames}{List of variable names. Should include temperature
+and light intensity}
+
+\item{leaf_Q10_day}{Leaf respiration thermal sensitivity during the day}
+
+\item{leaf_Q10_night}{Leaf respiration thermal sensitivity during the night}
 
 \item{root_Q10}{Root thermal sensitivity}
 
 \item{shoot_Q10}{Shoot thermal sensitivity}
 
-\item{leaf_k25}{Leaf respiration at 25 Celsius}
+\item{leaf_k25_day}{Leaf respiration at 25 Celsius during the day}
+
+\item{leaf_k25_night}{Leaf respiration at 25 Celsius during the night}
 
 \item{root_k25}{Root respiration at 25 Celsius}
 
@@ -35,11 +47,10 @@ calculate_r(
 \item{root_mass}{Root mass in g}
 
 \item{shoot_mass}{Shoot mass in g}
-
-\item{Temp}{Temperature in Kelvin}
 }
 \value{
-Calculates total respiration
+Calculates respiration separately for each tissue type on an area
+or mass basis, as well as a total plant basis.
 }
 \description{
 Functions for calculating respiration

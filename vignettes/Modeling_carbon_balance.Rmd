@@ -10,5 +10,31 @@ library(arrhenius.comparison)
 ```
 
 ```{r}
-
+data <- read.csv(system.file("extdata", "data_test.csv", 
+                             package = "arrhenius.comparison"),
+                 stringsAsFactors = FALSE)
+pars_v <- read.csv(system.file("extdata", "fits_v.csv", 
+                             package = "arrhenius.comparison"),
+                 stringsAsFactors = FALSE)
+pars_j <- read.csv(system.file("extdata", "fits_j.csv", 
+                             package = "arrhenius.comparison"),
+                 stringsAsFactors = FALSE)
+data_r <- calculate_r(data = data,
+                      leaf_Q10_day = 2,
+                      leaf_Q10_night = 2,
+                      root_Q10 = 2,
+                      shoot_Q10 = 2,
+                      leaf_k25_day = 1,
+                      leaf_k25_night = 1.5,
+                      root_k25 = 1,
+                      shoot_k25 = 1,
+                      leaf_area = 0.05,
+                      root_mass = 1,
+                      shoot_mass = 1)
+data_p <- calculate_p(G25 = 42.75,
+                      G_Ea = 37.830,
+                      Km25 = 718.40,
+                      Km_Ea = 65.50828,
+                      Temp = data$Temp,
+                      )
 ```
