@@ -18,7 +18,8 @@
 #' @export
 #'
 #' @examples
-calculate_p <- function(G25,
+calculate_p <- function(data,
+                        G25,
                         G_Ea,
                         Jmax25,
                         Jmax_dS,
@@ -64,4 +65,11 @@ calculate_p <- function(G25,
                         Ea = Vcmax_Ea,
                         Hd = Vcmax_Hd,
                         Temp = Temp)
+  
+  #Create dataframe output for photosynthetic parameters
+  df_photo <- data.frame(cbind(GammaStar, Jmax_medlyn, Jmax_new,
+                                Km, Vcmax_medlyn, Vcmax_new, Temp))
+  
+  #Return photosynthetic parameters
+  return(df_p)
 }
