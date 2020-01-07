@@ -74,7 +74,8 @@ data_p <- calculate_p(G25 = 42.75,
 data_phys[[i]] <- cbind(data_r, data_p)
 }
 #Test
-data_phys
+#datphys2 <- data_phys
+#data_phys <- data_phys[[1]]
 
 modelled <- list(NULL)
 for(i in 1:length(data_phys)){
@@ -86,7 +87,7 @@ modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             leaf_respiration = "leaf_respiration",
                                             root_respiration = "root_respiration",
                                             shoot_respiration = "shoot_respiration",
-                                            total_respiration = "total_respiration_plant",
+                                            total_respiration_plant = "total_respiration_plant",
                                             Ca = "Ca",
                                             Qin = "Qin",
                                             VPD = "VPD",
@@ -113,7 +114,7 @@ modelled2[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             leaf_respiration = "leaf_respiration",
                                             root_respiration = "root_respiration",
                                             shoot_respiration = "shoot_respiration",
-                                            total_respiration = "total_respiration_plant",
+                                            total_respiration_plant = "total_respiration_plant",
                                             Ca = "Ca",
                                             Qin = "Qin",
                                             VPD = "VPD",
@@ -207,7 +208,7 @@ modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             leaf_respiration = "leaf_respiration",
                                             root_respiration = "root_respiration",
                                             shoot_respiration = "shoot_respiration",
-                                            total_respiration = "total_respiration_plant",
+                                            total_respiration_plant = "total_respiration_plant",
                                             Ca = "Ca",
                                             Qin = "Qin",
                                             VPD = "VPD",
@@ -234,7 +235,7 @@ modelled2[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             leaf_respiration = "leaf_respiration",
                                             root_respiration = "root_respiration",
                                             shoot_respiration = "shoot_respiration",
-                                            total_respiration = "total_respiration_plant",
+                                            total_respiration_plant = "total_respiration_plant",
                                             Ca = "Ca",
                                             Qin = "Qin",
                                             VPD = "VPD",
