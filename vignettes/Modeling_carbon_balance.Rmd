@@ -10,6 +10,7 @@ library(arrhenius.comparison)
 ```
 
 ```{r}
+#Data below is from Stinziano & Way, 2017
 #Week 1 biomass was 2.49 g
 #Week 12 biomass was 12.68 g
 #Stem biomass is 0.199 * total
@@ -23,10 +24,15 @@ root_mass_1 <- 2.49 * 0.2
 root_mass_12 <- 12.68 * 0.4
 
 ```
-Basically need to run week 1 and week 2 code for 6 days of environmental data and compile
-#Week 1 modeling
+Basically need to run week 1 and week 2 code for environmental data and compile
+Note that the output will include a sum across all the environmental data in the
+input file. We will need to add descriptors for each day and then sum by day. As
+long as DOY is specified in the environment data, we will be able to do this
+easily since calculate_photo binds the environmental data to the physiology data.
+
+#Week 1 modeling - low root/leaf ratio
 ```{r}
-data <- read.csv(system.file("extdata", "data_test.csv", 
+data_env <- read.csv(system.file("extdata", "data_test.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
 pars_v <- read.csv(system.file("extdata", "fits_v.csv", 
@@ -37,7 +43,7 @@ pars_j <- read.csv(system.file("extdata", "fits_j.csv",
                  stringsAsFactors = FALSE)
 data_phys <- list(NULL)
 #Basically, we need a solid set of respiration data
-data_r <- calculate_r(data = data,
+data_r <- calculate_r(data = data_env,
                       leaf_Q10_day = 2.015,
                       leaf_Q10_night = 2.015,
                       root_Q10 = 2.015,
@@ -49,12 +55,13 @@ data_r <- calculate_r(data = data,
                       leaf_area = leaf_area_1,
                       root_mass = root_mass_1,
                       shoot_mass = stem_mass_1)
+data_r <- data_r[, 1:7] #remove temperature column - poses issue later
 for(i in 1:nrow(pars_v)){
 data_p <- calculate_p(G25 = 42.75,
                       G_Ea = 37.830,
                       Km25 = 718.40,
                       Km_Ea = 65.50828,
-                      Temp = data$Temp,
+                      Temp = data_env$Temp,
                       Vcmax25_m = pars_v$k25_o[i],
                       Vcmax_dS_m = pars_v$dS_o[i],
                       Vcmax_Hd_m = pars_v$Hd_o[i],
@@ -71,16 +78,15 @@ data_p <- calculate_p(G25 = 42.75,
                       Jmax_dS_n = pars_j$dS[i],
                       Jmax_Hd_n = pars_j$Hd[i],
                       Jmax_Ea_n = pars_j$Ea[i])
+data_p <- data_p[, 1:6]
 data_phys[[i]] <- cbind(data_r, data_p)
 }
-#Test
-#datphys2 <- data_phys
-#data_phys <- data_phys[[1]]
 
+#Model with Medlyn equation
 modelled <- list(NULL)
 for(i in 1:length(data_phys)){
 modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
-                            data_env = data,
+                            data_env = data_env,
                             varnames = list(GammaStar = "GammaStar",
                                             Jmax = "Jmax_medlyn",
                                             Km = "Km",
@@ -97,17 +103,34 @@ modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                             phi = 0.08,
                             time_step = 3600)
 }
+#Note, we will need a for loop that looks like this:
+for(i in 1:length(modelled)){
+  modelled[[i]][[1]]$ID <- "Medlyn"
+}
+
+ge <- list(NULL)
+for(i in 1:length(modelled)){
+  ge[[i]] <- modelled[[i]][[1]]
+}
+
+ge <- do.call("rbind", ge)
 
 dailyC <- list(NULL)
 for(i in 1:length(modelled)){
-  dailyC[[i]] <- modelled[[i]][[2]]
+  dailyC[[i]] <- modelled[[i]][[1]] %>% 
+    group_by(DOY, Location) %>% 
+    summarize(daily_plant_C = sum(A_net_plant * 3600) * 12.01 / 1000000,
+              daily_plant_photosynthesis = sum(A_gross_plant * 3600) * 12.01 / 1000000,
+              daily_plant_respiration = sum(total_respiration_plant * 3600) * 12.01 / 1000000)
+  dailyC[[i]]$ID <- "Medlyn"
 }
 dailyC <- do.call("rbind", dailyC)
 
+#Model with rederivation
 modelled2 <- list(NULL)
 for(i in 1:length(data_phys)){
 modelled2[[i]] <- calculate_photo(data_phys = data_phys[[i]],
-                            data_env = data,
+                            data_env = data_env,
                             varnames = list(GammaStar = "GammaStar",
                                             Jmax = "Jmax_new",
                                             Km = "Km",
@@ -124,31 +147,34 @@ modelled2[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                             phi = 0.08,
                             time_step = 3600)
 }
+#Note, we will need a for loop that looks like this:
+for(i in 1:length(modelled2)){
+  modelled2[[i]][[1]]$ID <- "New"
+}
+
+ge2 <- list(NULL)
+for(i in 1:length(modelled2)){
+  ge2[[i]] <- modelled2[[i]][[1]]
+}
+
+ge2 <- do.call("rbind", ge2)
+
 dailyC2 <- list(NULL)
 for(i in 1:length(modelled2)){
-  dailyC2[[i]] <- modelled2[[i]][[2]]
+  dailyC2[[i]] <- modelled2[[i]][[1]] %>% 
+    group_by(DOY, Location) %>% 
+    summarize(daily_plant_C = sum(A_net_plant * 3600) * 12.01 / 1000000,
+              daily_plant_photosynthesis = sum(A_gross_plant * 3600) * 12.01 / 1000000,
+              daily_plant_respiration = sum(total_respiration_plant * 3600) * 12.01 / 1000000)
+  dailyC2[[i]]$ID <- "Medlyn"
 }
 dailyC2 <- do.call("rbind", dailyC2)
 
-
-summary(lm(dailyC$daily_C_plant ~ dailyC2$daily_C_plant))
-BIC(lm(dailyC$daily_C_plant ~ dailyC2$daily_C_plant))
-BIC(lm(dailyC$daily_C_plant ~ dailyC2$daily_C_plant-1))
-plot(dailyC$daily_C_plant ~ dailyC2$daily_C_plant)
-summary(lm(dailyC$daily_photosynthesis ~ dailyC2$daily_photosynthesis))
-plot(dailyC$daily_photosynthesis ~ dailyC2$daily_photosynthesis)
-
-comps <- data.frame(c(1:334))
-comps$DailyC <- c(dailyC$daily_C_plant, dailyC2$daily_C_plant)
-comps$Photosynthesis <- c(dailyC$daily_photosynthesis, dailyC2$daily_photosynthesis)
-comps$Type <- c(rep("Medlyn", 167), rep("New", 167))
-t.test(DailyC ~ Type, comps, paired = TRUE)
-t.test(Photosynthesis ~ Type, comps, paired = TRUE)
-
-boxplot((dailyC$daily_C_plant - dailyC2$daily_C_plant) * 365) #g/year
+week_1_carbon <- rbind(dailyC, dailyC2)
+week_1_ge <- rbind(ge, ge2)
 ```
 
-#Week 12 modeling
+#Week 12 modeling - high root/leaf ratio
 ```{r}
 data <- read.csv(system.file("extdata", "data_test.csv", 
                              package = "arrhenius.comparison"),
@@ -250,21 +276,4 @@ for(i in 1:length(modelled2)){
   dailyC2[[i]] <- modelled2[[i]][[2]]
 }
 dailyC2 <- do.call("rbind", dailyC2)
-
-
-summary(lm(dailyC$daily_C_plant ~ dailyC2$daily_C_plant))
-BIC(lm(dailyC$daily_C_plant ~ dailyC2$daily_C_plant))
-BIC(lm(dailyC$daily_C_plant ~ dailyC2$daily_C_plant-1))
-plot(dailyC$daily_C_plant ~ dailyC2$daily_C_plant)
-summary(lm(dailyC$daily_photosynthesis ~ dailyC2$daily_photosynthesis))
-plot(dailyC$daily_photosynthesis ~ dailyC2$daily_photosynthesis)
-
-comps <- data.frame(c(1:334))
-comps$DailyC <- c(dailyC$daily_C_plant, dailyC2$daily_C_plant)
-comps$Photosynthesis <- c(dailyC$daily_photosynthesis, dailyC2$daily_photosynthesis)
-comps$Type <- c(rep("Medlyn", 167), rep("New", 167))
-t.test(DailyC ~ Type, comps, paired = TRUE)
-t.test(Photosynthesis ~ Type, comps, paired = TRUE)
-
-boxplot((dailyC$daily_C_plant - dailyC2$daily_C_plant) * 365) #g/year
 ```
