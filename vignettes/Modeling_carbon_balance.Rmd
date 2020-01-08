@@ -44,12 +44,12 @@ pars_j <- read.csv(system.file("extdata", "fits_j.csv",
 data_phys <- list(NULL)
 #Basically, we need a solid set of respiration data
 data_r <- calculate_r(data = data_env,
-                      leaf_Q10_day = 2.015,
+                      leaf_Q10_day = 2.015, #Atkin & Tjoelker 2003, 25C acclimated
                       leaf_Q10_night = 2.015,
                       root_Q10 = 2.015,
                       shoot_Q10 = 2.015,
-                      leaf_k25_day = 2.78 * 0.7,
-                      leaf_k25_night = 2.78,
+                      leaf_k25_day = 2.78 * 0.7, #Assumption from Stinziano et al. 2019
+                      leaf_k25_night = 2.78, #Resp from control in Stinziano & Way 2017
                       root_k25 = 0.0095,#Weger and Guy 1991
                       shoot_k25 = 0.0095,#Assume stem and root respiration rates are similar
                       leaf_area = leaf_area_1,
@@ -78,7 +78,7 @@ data_p <- calculate_p(G25 = 42.75,
                       Jmax_dS_n = pars_j$dS[i],
                       Jmax_Hd_n = pars_j$Hd[i],
                       Jmax_Ea_n = pars_j$Ea[i])
-data_p <- data_p[, 1:6]
+data_p <- data_p[, 1:6] #Removes temp column to preclude issues later
 data_phys[[i]] <- cbind(data_r, data_p)
 }
 
@@ -103,7 +103,7 @@ modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                             phi = 0.08,
                             time_step = 3600)
 }
-#Note, we will need a for loop that looks like this:
+
 for(i in 1:length(modelled)){
   modelled[[i]][[1]]$ID <- "Medlyn"
 }
@@ -147,7 +147,7 @@ modelled2[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                             phi = 0.08,
                             time_step = 3600)
 }
-#Note, we will need a for loop that looks like this:
+
 for(i in 1:length(modelled2)){
   modelled2[[i]][[1]]$ID <- "New"
 }
@@ -199,6 +199,7 @@ data_r <- calculate_r(data = data,
                       leaf_area = leaf_area_12,
                       root_mass = root_mass_12,
                       shoot_mass = stem_mass_12)
+data_r <- data_r[, 1:7] #remove temperature column - poses issue later
 for(i in 1:nrow(pars_v)){
 data_p <- calculate_p(G25 = 42.75,
                       G_Ea = 37.830,
@@ -221,6 +222,7 @@ data_p <- calculate_p(G25 = 42.75,
                       Jmax_dS_n = pars_j$dS[i],
                       Jmax_Hd_n = pars_j$Hd[i],
                       Jmax_Ea_n = pars_j$Ea[i])
+data_p <- data_p[, 1:6] #Removes temp column to preclude issues later
 data_phys[[i]] <- cbind(data_r, data_p)
 }
 
@@ -245,9 +247,26 @@ modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                             time_step = 3600)
 }
 
+#Note, we will need a for loop that looks like this:
+for(i in 1:length(modelled)){
+  modelled[[i]][[1]]$ID <- "Medlyn"
+}
+
+ge <- list(NULL)
+for(i in 1:length(modelled)){
+  ge[[i]] <- modelled[[i]][[1]]
+}
+
+ge <- do.call("rbind", ge)
+
 dailyC <- list(NULL)
 for(i in 1:length(modelled)){
-  dailyC[[i]] <- modelled[[i]][[2]]
+  dailyC[[i]] <- modelled[[i]][[1]] %>% 
+    group_by(DOY, Location) %>% 
+    summarize(daily_plant_C = sum(A_net_plant * 3600) * 12.01 / 1000000,
+              daily_plant_photosynthesis = sum(A_gross_plant * 3600) * 12.01 / 1000000,
+              daily_plant_respiration = sum(total_respiration_plant * 3600) * 12.01 / 1000000)
+  dailyC[[i]]$ID <- "Medlyn"
 }
 dailyC <- do.call("rbind", dailyC)
 
@@ -271,9 +290,37 @@ modelled2[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                             phi = 0.08,
                             time_step = 3600)
 }
+#Note, we will need a for loop that looks like this:
+for(i in 1:length(modelled2)){
+  modelled2[[i]][[1]]$ID <- "New"
+}
+
+ge2 <- list(NULL)
+for(i in 1:length(modelled2)){
+  ge2[[i]] <- modelled2[[i]][[1]]
+}
+
+ge2 <- do.call("rbind", ge2)
+
 dailyC2 <- list(NULL)
 for(i in 1:length(modelled2)){
-  dailyC2[[i]] <- modelled2[[i]][[2]]
+  dailyC2[[i]] <- modelled2[[i]][[1]] %>% 
+    group_by(DOY, Location) %>% 
+    summarize(daily_plant_C = sum(A_net_plant * 3600) * 12.01 / 1000000,
+              daily_plant_photosynthesis = sum(A_gross_plant * 3600) * 12.01 / 1000000,
+              daily_plant_respiration = sum(total_respiration_plant * 3600) * 12.01 / 1000000)
+  dailyC2[[i]]$ID <- "Medlyn"
 }
 dailyC2 <- do.call("rbind", dailyC2)
+
+week_12_carbon <- rbind(dailyC, dailyC2)
+week_12_ge <- rbind(ge, ge2)
+```
+
+Merge both datasets and output
+```{r}
+carbon <- rbind(week_1_carbon, week_12_carbon)
+gasex <- rbind(week_1_ge, week_12_ge)
+write.csv(carbon, "carbon.csv")
+write.csv(gasex, "gasex.csv")
 ```
