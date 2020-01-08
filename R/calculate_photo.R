@@ -1,19 +1,24 @@
-#' Title
+#' Calculating CO2 exchange and carbon exchange
 #'
-#' @param data_phys 
-#' @param data_env 
-#' @param varnames 
-#' @param alpha 
-#' @param g0 
-#' @param g1 
-#' @param leaf_area
-#' @param phi 
-#' @param time_step
+#' @param data_phys Dataframe containing physiological data
+#' @param data_env Dataframe containing environmental data
+#' @param varnames List of variable names if different from the default
+#' @param alpha Absorbance of photosynthetically active radiation
+#' @param g0 Intercept of the Medlyn et al. (2011) stomatal conductance
+#' model in mol m-2 s-1
+#' @param g1 Slope of the Medlyn et al. (2011) stomatal conductance model
+#' @param leaf_area Leaf area in m^2
+#' @param phi Maximum quantum efficiency of CO2 assimilation
+#' @param time_step Number of seconds per unit time in the environmental data
 #'
-#' @return
+#' @return Calculates CO2 assimilation on a leaf and whole-plant level. Sums
+#' carbon exchange across the entire environment input. Note that this is
+#' daily carbon exchange if the environmental input is 1 day, otherwise it
+#' is just total carbon exchange for the inputs. Output is a list containing
+#' 2 dataframes - element 1 is the gas exchange data, element 2 is the summed
+#' carbon data. Carbon exchange outputs are in g/plant/time period. See package
+#' vignette for how to use this function.
 #' @export
-#'
-#' @examples
 calculate_photo <- function(data_phys, #physiology dataframe
                             data_env, #environmental dataframe
                             varnames = list(GammaStar = "GammaStar",

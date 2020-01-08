@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_photo.R
 \name{calculate_photo}
 \alias{calculate_photo}
-\title{Title}
+\title{Calculating CO2 exchange and carbon exchange}
 \usage{
 calculate_photo(
   data_phys,
@@ -20,25 +20,34 @@ calculate_photo(
 )
 }
 \arguments{
-\item{data_phys}{}
+\item{data_phys}{Dataframe containing physiological data}
 
-\item{data_env}{}
+\item{data_env}{Dataframe containing environmental data}
 
-\item{varnames}{}
+\item{varnames}{List of variable names if different from the default}
 
-\item{alpha}{}
+\item{alpha}{Absorbance of photosynthetically active radiation}
 
-\item{g0}{}
+\item{g0}{Intercept of the Medlyn et al. (2011) stomatal conductance
+model in mol m-2 s-1}
 
-\item{g1}{}
+\item{g1}{Slope of the Medlyn et al. (2011) stomatal conductance model}
 
-\item{phi}{}
+\item{leaf_area}{Leaf area in m^2}
 
-\item{time_step}{}
+\item{phi}{Maximum quantum efficiency of CO2 assimilation}
+
+\item{time_step}{Number of seconds per unit time in the environmental data}
 }
 \value{
-
+Calculates CO2 assimilation on a leaf and whole-plant level. Sums
+carbon exchange across the entire environment input. Note that this is
+daily carbon exchange if the environmental input is 1 day, otherwise it
+is just total carbon exchange for the inputs. Output is a list containing
+2 dataframes - element 1 is the gas exchange data, element 2 is the summed
+carbon data. Carbon exchange outputs are in g/plant/time period. See package
+vignette for how to use this function.
 }
 \description{
-Title
+Calculating CO2 exchange and carbon exchange
 }

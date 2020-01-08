@@ -31,9 +31,21 @@ Arrh_base(k25, Ea, Temp)
 }
 \value{
 Provides functions for modeling temperature responses of biological
-processes
+processes. Includes Arrhenius (1915), canonical modified Arrhenius (Medlyn
+et al., 2002 based on Johnson et al. 1942), rederived modified Arrhenius
+(from Johnson et al., 1942), and a Q10 response for respiration.
 
-ADD REFERENCES HERE
+Arrhenius S. 1915. Quantitative laws in biological chemistry. Bell.
+
+Johnson, FH, Eyring H, WIlliams RW. 1942. The nature of enzyme
+inhibitions in bacterial luminescence: sulfanilamide, urethane,
+temperature and pressure. J Cell Comp Physiol 20:247-268
+
+Medlyn BE, Dreyer E, Ellsworth D, Forstreuter M, Harley PC,
+Kirschbaum MUF, Le Roux X, Montpied P, Strassemeyer J, Walcroft A,
+Wang K, Loutstau D. 2002. Temperature response of parameters of a
+biochemically based model of photosynthesis. II. A review of
+experimental data. Plant Cell Environ 25:1167-1179
 }
 \description{
 Temperature response functions

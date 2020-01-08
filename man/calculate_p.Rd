@@ -89,7 +89,10 @@ rederived modified Arrhenius model}
 }
 \value{
 Calculates photosynthetic parameters for the Farquhar et al. (1980)
-model of photosynthesis.
+model of photosynthesis. See ?t_functions for details on temperature scaling.
+
+Farquhar GD, et al. 1980. A biochemical model of photosynthetic CO2 
+assimilation in leaves of C3 species. Planta 149: 78-90.
 }
 \description{
 Calculating photosynthetic parameters
