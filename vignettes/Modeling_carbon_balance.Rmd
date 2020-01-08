@@ -7,6 +7,7 @@ output: html_document
 
 ```{r}
 library(arrhenius.comparison)
+library(dplyr)
 ```
 
 ```{r}
@@ -57,10 +58,10 @@ data_r <- calculate_r(data = data_env,
                       shoot_mass = stem_mass_1)
 data_r <- data_r[, 1:7] #remove temperature column - poses issue later
 for(i in 1:nrow(pars_v)){
-data_p <- calculate_p(G25 = 42.75,
-                      G_Ea = 37.830,
-                      Km25 = 718.40,
-                      Km_Ea = 65.50828,
+data_p <- calculate_p(G25 = 42.75, #Bernacchi et al. 2001
+                      G_Ea = 37.830, #Bernacchi et al. 2001
+                      Km25 = 718.40, #Bernacchi et al. 2001
+                      Km_Ea = 65.50828, #Bernacchi et al. 2001
                       Temp = data_env$Temp,
                       Vcmax25_m = pars_v$k25_o[i],
                       Vcmax_dS_m = pars_v$dS_o[i],
@@ -100,8 +101,8 @@ modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             Temp = "Temp",
                                             Vcmax = "Vcmax_medlyn"),
                             leaf_area = leaf_area_1,
-                            phi = 0.08,
-                            time_step = 3600)
+                            phi = 0.08, #Campbell & Norman 1998
+                            time_step = 3600) #3600 s/hr
 }
 
 for(i in 1:length(modelled)){
@@ -119,7 +120,7 @@ dailyC <- list(NULL)
 for(i in 1:length(modelled)){
   dailyC[[i]] <- modelled[[i]][[1]] %>% 
     group_by(DOY, Location) %>% 
-    summarize(daily_plant_C = sum(A_net_plant * 3600) * 12.01 / 1000000,
+    summarize(daily_plant_C = sum(A_net_plant * 3600) * 12.01 / 1000000, #12.01 g/mol, umol to mol
               daily_plant_photosynthesis = sum(A_gross_plant * 3600) * 12.01 / 1000000,
               daily_plant_respiration = sum(total_respiration_plant * 3600) * 12.01 / 1000000)
   dailyC[[i]]$ID <- "Medlyn"

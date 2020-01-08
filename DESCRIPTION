@@ -23,5 +23,6 @@ Suggests: knitr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
-Imports: stats (>= 3.6.1),
+Imports: dplyr (>= 0.8.3),
+    stats (>= 3.6.1),
     utils (>= 3.6.1)
