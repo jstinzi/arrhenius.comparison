@@ -1,0 +1,23 @@
+Needed Results:
+
+slopes and intercepts (and graphs) for
+
+Total daily C Gain
+lm(medlyn ~ new)
+
+Total daily photosynthesis
+lm(medlyn ~ new)
+
+Total daily A/R
+lm(medlyn ~ new)
+
+units are all gC plant-1 day-1
+
+can also check if:
+
+total daily C gain difference (medlyn - new)
+correlates with sd(Temp by DOY * Location)
+
+In theory, the small differences in temp response
+parameters should be exacerbated by environmental
+variation
