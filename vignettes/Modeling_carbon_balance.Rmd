@@ -1,8 +1,12 @@
 ---
 title: "Modeling_carbon_balance"
 author: "Joseph R. Stinziano"
-date: "07/01/2020"
+date: "`r Sys.Date()"
 output: html_document
+vignette: >
+ %\VignetteIndexEntry{Using_plantecophystools}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
 ---
 
 ```{r}

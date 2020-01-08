@@ -14,7 +14,7 @@ Description: Provides equations to model and compare the modified Arrhenius
     equation in Medlyn et al. 2002, with the newly derived version.
 URL: https://github.com/jstinzi/arrhenius.comparison
 BugReports: https://github.com/jstinzi/arrhenius.comparison/issues
-License: MIT
+License: MIT + file LICENSE
 Depends: R (>= 3.6.0)
 Encoding: UTF-8
 LazyData: true
