@@ -112,11 +112,11 @@ calculate_photo <- function(data_phys, #physiology dataframe
   #  Ci[i] <- Ci[j]
   #}
   
-  if(err < 0.01 & j <= 1000){
-    convergence[i] <- TRUE
-  } else {
-    convergence[i] <- FALSE
-  }
+  #if(err < 0.01 & j <= 1000){
+  #  convergence[i] <- TRUE
+  #} else {
+  #  convergence[i] <- FALSE
+  #}
   
   }#End J loop - j loop works
   
