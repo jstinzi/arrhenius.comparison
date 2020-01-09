@@ -193,7 +193,7 @@ summary(lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C ~ week_1_c
 
 #Week 12 modeling - high root/leaf ratio
 ```{r}
-data <- read.csv(system.file("extdata", "data_test.csv", 
+data <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
 pars_v <- read.csv(system.file("extdata", "fits_v_2.csv", 
@@ -347,7 +347,7 @@ write.csv(gasex, "gasex_Hd200.csv")
 #Hd = fitted
 #Week 1 modeling - low root/leaf ratio
 ```{r}
-data_env <- read.csv(system.file("extdata", "data_test.csv", 
+data_env <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
 pars_v <- read.csv(system.file("extdata", "fits_v_2.csv", 
@@ -496,7 +496,7 @@ summary(lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C ~ week_1_c
 
 #Week 12 modeling - high root/leaf ratio
 ```{r}
-data <- read.csv(system.file("extdata", "data_test.csv", 
+data <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
 pars_v <- read.csv(system.file("extdata", "fits_v_2.csv", 
