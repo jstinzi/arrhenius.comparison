@@ -1,6 +1,3 @@
-Need to cross reference IDs to make sure they all match,
-then need to split by hd = 200 or not
-
 
 Needed Results:
 
