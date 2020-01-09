@@ -346,8 +346,8 @@ Merge both datasets and output
 ```{r}
 carbon <- rbind(week_1_carbon, week_12_carbon)
 gasex <- rbind(week_1_ge, week_12_ge)
-write.csv(carbon, "carbon.csv")
-write.csv(gasex, "gasex.csv")
+write.csv(carbon, "carbon_Hd200.csv")
+write.csv(gasex, "gasex_Hd200.csv")
 ```
 
 #Hd = fitted
@@ -649,6 +649,6 @@ Merge both datasets and output
 ```{r}
 carbon <- rbind(week_1_carbon, week_12_carbon)
 gasex <- rbind(week_1_ge, week_12_ge)
-write.csv(carbon, "carbon.csv")
-write.csv(gasex, "gasex.csv")
+write.csv(carbon, "carbon_HdFit.csv")
+write.csv(gasex, "gasex_HdFit.csv")
 ```
