@@ -38,7 +38,7 @@ easily since calculate_photo binds the environmental data to the physiology data
 #Hd = 200 kJ mol-1
 #Week 1 modeling - low root/leaf ratio
 ```{r}
-data_env <- read.csv(system.file("extdata", "data_test.csv", 
+data_env <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
 pars_v <- read.csv(system.file("extdata", "fits_v_2.csv", 
@@ -55,12 +55,6 @@ pars_j <- pars_v[pars_j$Hd == 200,]
 #and match up the vcmax and jmax data
 #diffs <- cbind(pars_v$ID, pars_j$ID, pars_v$Hd, pars_j$Hd)
 #colnames(diffs) <- c("V", "J", "V", "J")
-
-pars_v$ID <- as.character(pars_v$ID)
-pars_j$ID <- as.character(pars_j$ID)
-missingvals <- setdiff(x = pars_j$ID, y = pars_v$ID)
-testdat <- pars_v[IDS %in% pars_v$ID,]
-testdat2 <- pars_j[pars_j$ID %in% IDS,]
 
 data_phys <- list(NULL)
 #Basically, we need a solid set of respiration data
