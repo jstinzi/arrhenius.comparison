@@ -1,5 +1,6 @@
 
 Needed Results:
+***Note that "new" is the x-axis because it is the technically correct form
 
 slopes and intercepts (and graphs) for
 
