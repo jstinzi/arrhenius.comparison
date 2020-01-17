@@ -6,7 +6,6 @@ Date: 2019-10-21
 Authors@R: c(
     person("Joseph", "Stinziano", email = "josephstinziano@gmail.com",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7628-4201")),
-    person("Sandra", "Kerbler", email = "sandra.m.kerbler@gmail.com", role = "aut"),
     person("Bridget", "Murphy", email = "bmurph26@uwo.ca", role = "aut"))
 Author: Joseph Stinziano [aut, cre]
 Maintainer: Joseph Stinziano <josephstinziano@gmail.com>
