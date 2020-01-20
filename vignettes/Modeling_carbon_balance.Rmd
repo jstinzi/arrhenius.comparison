@@ -191,6 +191,38 @@ boxplot(daily_plant_C ~ ID, data = week_1_carbon)
 summary(lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_C-1)) #0.03% underestimation
 ```
 
+#Statistics and graphical output for Week 1 (Hd = 200 kJ mol-1)
+```{r}
+# Additional column for daily plant A/R
+week_1_carbon$daily_plant_AR = daily_plant_AR
+week_1_carbon$daily_plant_AR <- (week_1_carbon$daily_plant_photosynthesis/week_1_carbon$daily_plant_respiration)
+week_1_carbon$daily_plant_AR
+
+#Stats
+summary(lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_C))
+lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_C)
+
+summary(lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_photosynthesis ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_photosynthesis))
+lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_photosynthesis ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_photosynthesis)
+
+summary(lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_AR ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_AR))
+lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_AR ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_AR)
+
+#Graphs
+plot(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_C ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C,
+  xlab="New Total Daily C Gain", ylab="Old Total Daily C Gain", main="a) Week 1 using Hd Fit 200 kJ")
+abline(lm(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_C ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C), col="blue")
+
+plot(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_photosynthesis ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_photosynthesis,
+  xlab="New Total Daily Photosynthesis", ylab="Old Total Daily Photosynthesis", main="c) Week 1 using Hd Fit 200 kJ")
+abline(lm(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_photosynthesis ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_photosynthesis), col="blue")
+
+plot(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_AR ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_AR,
+  xlab="New Total Daily A/R", ylab="Old Total Daily A/R", main="e) Week 1 using Hd Fit 200 kJ")
+abline(lm(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_AR ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_AR), col="blue")
+```
+
+
 #Week 12 modeling - high root/leaf ratio
 ```{r}
 data <- read.csv(system.file("extdata", "env_data.csv", 
@@ -334,6 +366,37 @@ dailyC2 <- do.call("rbind", dailyC2)
 
 week_12_carbon <- rbind(dailyC, dailyC2)
 week_12_ge <- rbind(ge, ge2)
+```
+
+#Statistics and graphical output for Week 12 (Hd = 200 kJ mol-1)
+```{r}
+# Additional column for daily plant A/R
+week_12_carbon$daily_plant_AR = daily_plant_AR
+week_12_carbon$daily_plant_AR <- (week_12_carbon$daily_plant_photosynthesis/week_12_carbon$daily_plant_respiration)
+week_12_carbon$daily_plant_AR
+
+#Stats
+summary(lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_C ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_C))
+lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_C ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_C)
+
+summary(lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_photosynthesis ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_photosynthesis))
+lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_photosynthesis ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_photosynthesis)
+
+summary(lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_AR ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_AR))
+lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_AR ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_AR)
+
+#Graphs
+plot(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_C ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_C,
+  xlab="New Total Daily C Gain", ylab="Old Total Daily C Gain", main="b) Week 12 using Hd Fit 200 kJ")
+abline(lm(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_C ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_C), col="blue")
+
+plot(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_photosynthesis ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_photosynthesis,
+  xlab="New Total Daily Photosynthesis", ylab="Old Total Daily Photosynthesis", main="d) Week 12 using Hd Fit 200 kJ")
+abline(lm(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_photosynthesis ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_photosynthesis), col="blue")
+
+plot(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_AR ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_AR,
+  xlab="New Total Daily A/R", ylab="Old Total Daily A/R", main="f) Week 12 using Hd Fit 200 kJ")
+abline(lm(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_AR ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_AR), col="blue")
 ```
 
 Merge both datasets and output
@@ -494,6 +557,38 @@ boxplot(daily_plant_C ~ ID, data = week_1_carbon)
 summary(lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_C-1)) #0.1% underestimation
 ```
 
+#Statistics and graphical output for Week 1 (Hd Fit)
+```{r}
+# Additional column for daily plant A/R
+week_1_carbon$daily_plant_AR = daily_plant_AR
+week_1_carbon$daily_plant_AR <- (week_1_carbon$daily_plant_photosynthesis/week_1_carbon$daily_plant_respiration)
+week_1_carbon$daily_plant_AR
+
+#Stats
+summary(lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_C))
+lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_C)
+
+summary(lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_photosynthesis ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_photosynthesis))
+lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_photosynthesis ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_photosynthesis)
+
+summary(lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_AR ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_AR))
+lm(week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_AR ~ week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_AR)
+
+#Graphs
+plot(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_C ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C,
+  xlab="New Total Daily C Gain", ylab="Old Total Daily C Gain", main="a) Week 1 using Hd Fit")
+abline(lm(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_C ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_C), col="blue")
+
+plot(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_photosynthesis ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_photosynthesis,
+  xlab="New Total Daily Photosynthesis", ylab="Old Total Daily Photosynthesis", main="c) Week 1 using Hd Fit")
+abline(lm(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_photosynthesis ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_photosynthesis), col="blue")
+
+plot(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_AR ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_AR,
+  xlab="New Total Daily A/R", ylab="Old Total Daily A/R", main="e) Week 1 using Hd Fit")
+abline(lm(week_1_carbon[week_1_carbon$ID == "New",]$daily_plant_AR ~ week_1_carbon[week_1_carbon$ID == "Medlyn",]$daily_plant_AR), col="blue")
+```
+
+
 #Week 12 modeling - high root/leaf ratio
 ```{r}
 data <- read.csv(system.file("extdata", "env_data.csv", 
@@ -637,6 +732,37 @@ dailyC2 <- do.call("rbind", dailyC2)
 
 week_12_carbon <- rbind(dailyC, dailyC2)
 week_12_ge <- rbind(ge, ge2)
+```
+
+#Statistics and graphical output for Week 12 (Hd fit)
+```{r}
+# Additional column for daily plant A/R
+week_12_carbon$daily_plant_AR = daily_plant_AR
+week_12_carbon$daily_plant_AR <- (week_12_carbon$daily_plant_photosynthesis/week_12_carbon$daily_plant_respiration)
+week_12_carbon$daily_plant_AR
+
+#Stats
+summary(lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_C ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_C))
+lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_C ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_C)
+
+summary(lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_photosynthesis ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_photosynthesis))
+lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_photosynthesis ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_photosynthesis)
+
+summary(lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_AR ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_AR))
+lm(week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_AR ~ week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_AR)
+
+#Graphs
+plot(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_C ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_C,
+  xlab="New Total Daily C Gain", ylab="Old Total Daily C Gain", main="b) Week 12 using Hd Fit")
+abline(lm(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_C ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_C), col="blue")
+
+plot(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_photosynthesis ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_photosynthesis,
+  xlab="New Total Daily Photosynthesis", ylab="Old Total Daily Photosynthesis", main="d) Week 12 using Hd Fit")
+abline(lm(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_photosynthesis ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_photosynthesis), col="blue")
+
+plot(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_AR ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_AR,
+  xlab="New Total Daily A/R", ylab="Old Total Daily A/R", main="f) Week 12 using Hd Fit")
+abline(lm(week_12_carbon[week_12_carbon$ID == "New",]$daily_plant_AR ~ week_12_carbon[week_12_carbon$ID == "Medlyn",]$daily_plant_AR), col="blue")
 ```
 
 Merge both datasets and output
