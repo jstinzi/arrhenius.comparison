@@ -1,4 +1,6 @@
-ABQ2 <- read.csv("env_data_ABQ_2.csv")
+ABQ2 <- read.csv(system.file("extdata", "env_data_ABQ_2.csv", 
+                             package = "arrhenius.comparison"),
+                 stringsAsFactors = FALSE)
 names(ABQ2)
 ABQ2$Month_f = factor(ABQ2$Month, levels=c('May','August','October'))
 
@@ -19,7 +21,9 @@ ABQ_light <- ggplot(data = ABQ2, aes(x = Hour, y = Qin))+
   facet_grid(~ Month_f)
 ABQ_light
 
-LDN <- read.csv("env_data_London.csv")
+LDN <- read.csv(system.file("extdata", "env_data_London.csv", 
+                            package = "arrhenius.comparison"),
+                stringsAsFactors = FALSE)
 LDN$Month_f = factor(LDN$Month, levels=c('May','August','October'))
 LDN_light <- ggplot(data = LDN, aes(x = Hour, y = Qin))+
   ggtitle(label = expression("f)"~"Environmental"~"Light"~"Intensity"~"in"~"LDN")) +
