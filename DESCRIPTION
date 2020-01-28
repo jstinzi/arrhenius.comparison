@@ -2,7 +2,7 @@ Package: arrhenius.comparison
 Type: Package
 Title: Comparing versions of the modified Arrhenius equation
 Version: 1.0.0
-Date: 2019-10-21
+Date: 2020-01-27
 Authors@R: c(
     person("Joseph", "Stinziano", email = "josephstinziano@gmail.com",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7628-4201")),

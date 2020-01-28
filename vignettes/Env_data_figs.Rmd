@@ -1,3 +1,11 @@
+---
+title: "Env_data_figs"
+author: "Joseph R. Stinziano"
+date: "27/01/2020"
+output: html_document
+---
+
+```{r include = FALSE}
 ABQ2 <- read.csv(system.file("extdata", "env_data_ABQ_2.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
@@ -112,3 +120,5 @@ jpeg("Figure 1.jpeg", width = 10, height = 10, units = "in", res = 600)
 grid.arrange(ABQ_temp, LDN_temp, ABQ_vpd, LDN_vpd, ABQ_light, LDN_light,
              ncol = 2, nrow = 3)
 dev.off()    
+
+```

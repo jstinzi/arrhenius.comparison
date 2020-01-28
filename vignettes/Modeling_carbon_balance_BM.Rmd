@@ -14,7 +14,7 @@ library(arrhenius.comparison)
 library(dplyr)
 ```
 
-```{r}
+```{r include = FALSE}
 #Data below is from Stinziano & Way, 2017
 #Week 1 biomass was 2.49 g
 #Week 12 biomass was 12.68 g
@@ -37,7 +37,8 @@ easily since calculate_photo binds the environmental data to the physiology data
 
 #Hd = 200 kJ mol-1
 #Week 1 modeling - low root/leaf ratio
-```{r}
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 data_env <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
@@ -193,7 +194,8 @@ lm(week_1_carbon_Hd200[week_1_carbon_Hd200$ID == "Medlyn",]$daily_plant_C ~ week
 ```
 
 #Statistics and graphical output for Week 1 (Hd = 200 kJ mol-1)
-```{r}
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 #Additional column for daily plant A/R
 week_1_carbon_Hd200$daily_plant_AR <- (week_1_carbon_Hd200$daily_plant_photosynthesis/week_1_carbon_Hd200$daily_plant_respiration)
 week_1_carbon_Hd200$daily_plant_AR
@@ -220,7 +222,8 @@ abline(lm(week_1_carbon_Hd200[week_1_carbon_Hd200$ID == "New",]$daily_plant_AR ~
 ```
 
 #Week 12 modeling - high root/leaf ratio
-```{r}
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 data <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
@@ -368,7 +371,8 @@ lm(week_12_carbon_Hd200[week_12_carbon_Hd200$ID == "Medlyn",]$daily_plant_C ~ we
 ```
 
 #Statistics and graphical output for Week 12 (Hd = 200 kJ mol-1)
-```{r}
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 # Additional column for daily plant A/R
 week_12_carbon_Hd200$daily_plant_AR <- (week_12_carbon_Hd200$daily_plant_photosynthesis/week_12_carbon_Hd200$daily_plant_respiration)
 week_12_carbon_Hd200$daily_plant_AR
@@ -395,7 +399,8 @@ abline(lm(week_12_carbon_Hd200[week_12_carbon_Hd200$ID == "New",]$daily_plant_AR
 ```
 
 Merge both datasets and output
-```{r}
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 carbon <- rbind(week_1_carbon, week_12_carbon)
 gasex <- rbind(week_1_ge, week_12_ge)
 write.csv(carbon, "carbon_Hd200.csv")
@@ -404,7 +409,8 @@ write.csv(gasex, "gasex_Hd200.csv")
 
 #Hd = fitted
 #Week 1 modeling - low root/leaf ratio
-```{r}
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 data_env <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
@@ -554,7 +560,8 @@ lm(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "Medlyn",]$daily_plant_C ~ week
 ```
 
 #Statistics and graphical output for Week 1 (Hd Fit)
-```{r}
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 # Additional column for daily plant A/R
 week_1_carbon_Hdfit$daily_plant_AR <- (week_1_carbon_Hdfit$daily_plant_photosynthesis/week_1_carbon_Hdfit$daily_plant_respiration)
 week_1_carbon_Hdfit$daily_plant_AR
@@ -581,7 +588,8 @@ abline(lm(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "New",]$daily_plant_AR ~
 ```
 
 #Week 12 modeling - high root/leaf ratio
-```{r}
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 data <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
@@ -729,7 +737,8 @@ summary(lm(week_12_carbon_Hdfit[week_12_carbon_Hdfit$ID == "Medlyn",]$daily_plan
 ```
 
 #Statistics and graphical output for Week 12 (Hd fit)
-```{r}
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 # Additional column for daily plant A/R
 week_12_carbon_Hdfit$daily_plant_AR <- (week_12_carbon_Hdfit$daily_plant_photosynthesis/week_12_carbon_Hdfit$daily_plant_respiration)
 week_12_carbon_Hdfit$daily_plant_AR
@@ -756,13 +765,15 @@ abline(lm(week_12_carbon_Hdfit[week_12_carbon_Hdfit$ID == "New",]$daily_plant_AR
 ```
 
 Merge both datasets and output
-```{r}
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 carbon <- rbind(week_1_carbon, week_12_carbon)
 gasex <- rbind(week_1_ge, week_12_ge)
 write.csv(carbon, "carbon_HdFit.csv")
 write.csv(gasex, "gasex_HdFit.csv")
 ```
-
+#Remove octothorpe below to run chunk
+#```{r include = FALSE}
 #More complex ggplot graphs
 FigData <- read.csv(system.file("extdata", "FigModelingData.csv", 
                              package = "arrhenius.comparison"),
@@ -984,3 +995,4 @@ jpeg("Figure 5.jpeg", width = 7.5, height = 7.5, units = "in", res = 600)
 grid.arrange(W1_HdVar_AR, W1_Hd200_AR, W12_HdVar_AR, W12_Hd200_AR,
              ncol = 2, nrow = 2)
 dev.off()   
+```
