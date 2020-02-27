@@ -3,6 +3,8 @@ title: "GCB Review Response"
 output: github_document
 ---
 
+TARGET JOURNAL: New Phytologist
+
 ## Reviewer: 1
 Comments to the Author
 This manuscript describes a comparison of modeled carbon balance using a modern version of a temperature response function originally derived in 1942 with the original version of that function. The authors noticed that the modern version omits a direct proportionality to temperature itself (absolute temperature, in kelvins). The reason for the omission is unclear; perhaps it was a mathematical error in earlier works applying the 1942 expression. The authors show that if the original version of the response function is used instead of the modern version (the one with the apparent error), predictions of carbon balance are substantially affected.
@@ -11,9 +13,13 @@ I appreciate the attention to detail that brought the authors to notice this odd
 
 Few, if any, modern ecophysiologists, and particularly those engaged in modeling at large scales, interpret these temperature response functions and their internal parameters as essentially mechanistic. That is, the internal parameters are *never* estimated on the basis of their original mechanistic interpretation in terms of biochemistry. Instead, the equations are always fitted empirically to available temperature response data. This is perhaps most strongly illustrated by the fact that different functions have emerged as the preferred ones for simulating T responses of various photosynthetic and respiratory parameters. Those choices have generally not been based on biochemical principles, but rather, on how well any given function fitted the data. Therefore, the figure of merit for "temperature response functions" isn't whether they are faithful to their original derivations. What matters in practice is how well they fit the data. It is in this respect that the current ms falls short: there is literally no attention given to, nor any information provided about, whether the "old" or "new" equation leads to more *accurate* predictions of either T responses of variables, narrowly, or of carbon balance more broadly. In my mind, that is the one and only important question from the standpoint of modeling carbon balance. Unfortunately the current ms (as written) doesn't address this point at all. Instead it focuses on differences in the fitted internal parameters (delta-H, etc). 
 
+JOE - getting RMSE, SS, reviewer misses philosophical point
+
 To be clear, I fully understand the value of mechanistic models as opposed to empirical ones. I recognize that the internal parameters might have some conserved meaning. But these models aren't really applied in this way. For example, people don't (to my knowledge) predict acclimation or adaptation of T response curves on the basis of conservative principles involving these internal parameters; instead they do experiments and re-fit the equations empirically. It's a bit like the difference between how gamma-star is estimated empirically from gas exchange experiments instead of being estimated using experimental values for its component parameters. 
 
 There are some important omissions from the ms, such as the temperature range of the data to which the two equations were fitted vs applied in the carbon balance modeling, and information about the experiments that produced those data. It would be very helpful also to see the actual curves, both in generic terms and as specifically fitted to the data. Perhaps also as fitted to one another, to get a sense of how different they really are in principle.
+
+JOE - show curves, very brief descriptions of studies
 
 specific comments by line number
 
@@ -24,6 +30,8 @@ I recommend rewording the title to clarify what the clause "that affects leaf ca
 50: at temperature T
 
 97, 99: I don't think it's necessary to include the intermediate steps with terms like "DeltaS+-DeltaH" and "298.15—DeltaH". It's also potentially ambiguous to some readers (does "+-" mean "plus or minus", or are the authors including an extraneous plus symbol?)
+
+JOE
 
 The equations, in general: First, the exponential functions with complicated operands should be written out as exp(...) for clarity. Second, the authors should avoid using the "inline" form for the Microsoft Equation Editor equations. The "professional" form is far easier to read. These two issues are particularly bad, for example, in Equation 5.
 
@@ -37,6 +45,10 @@ The equations, in general: First, the exponential functions with complicated ope
 
 In Table 2, the first equation that appears on page 8 appears to be incorrect. I'm not sure if it's a typo. First, even if J = Jmax (in saturating light), Wj should be proportional to the quantity involving ci. Second, even if this was a typo and the closing parenthesis for the min() function was meant to be located after Qin (so that J = min(Jmax, alpha*phi*Qin)), this is a pretty non-standard way to model J, that is, as a simple minimum of capacity and light limited values as opposed to using a non-rectangular hyperbola or something similar. The authors should clarify this equation and its justification.
 
+Report actual atkin and tjoelker equation where R1 = k25, R2 some type of k notation
+
+JOE
+
 194-... I don't think the headline result here should be changes in the fitting of each parameter. Since these temperature response equations are invariably applied in a strictly empirical fashion, all that matters is the fit of the overall function.
 
 194-... Perhaps the first results graphs should be the actual data for each fitted variable vs temperature, overlaid with the fitted versions of Equations 3 and 10. Yet these relationships don't seem to appear anywhere. That's quite odd. 
@@ -44,6 +56,8 @@ In Table 2, the first equation that appears on page 8 appears to be incorrect. I
 195: which was the y-variable and which the x for these slopes?
 
 313: but nobody does this, arbitrarily holding one parameter constant when fitting a temperature response curve. Unclear why these comparisons are relevant. 
+
+THIS IS EXACTLY WHAT EVERYONE DOES - cite the like 30 or so papers that do this in our response, and in paper
 
 
 ##Reviewer: 2
@@ -96,9 +110,15 @@ The study “A derivation error exists in the current implementation of the John
 I have a few observations the authors may wish to consider.
 1. My main frustration is the complete lack of reference to all the other forms of that Johnson et al., (1942) equation available in literature. A number of alternative functions have been used to model the temperature dependences of photosynthetic capacities; Vcmax and Jmax (see, for example, Harley et al. 1986; Long 1991; Harley et al. 1992; Harley & Baldocchi 1995; Lloyd et al. 1995). However, all these equations are actually just alternative expressions of basic Johnson et al., (1942). There is fundamentally no difference between these functions, and it is not clear the real reason for choosing Medlyn et al., (2002) for this study over the others. I would suggest that the authors should also review all the other forms of that equation and verify how different they all are and what fraction of a percent difference in carbon balance they make. I firmly think that such an evaluation is inevitable. 
 
+JOE - look at other arhenius eqns, see if they work better?
+
 2. In the process of rederivation of the modified Arrhenius function, the authors defined that the term c’’ of the Johnson et al., (1947) as a second derivative of the rate and assumed it as a temperature independent constant (L89). If the rate of a given reaction is temperature dependent, it is not clear how the second derivative is not temperature dependent given the term c’’ is not explicitly defined in Johnson et al., (1942). Hence, it is not clear how the term c’’ cancelled out when relativizing the function to a reference temperature (compare Equations 6 & 7). 
 
+If we reword to an undefined constant...
+
 3. When comparing the fitted temperature response parameters between the corrected and Medlyn et al., (2002) derivation of the modified Arrhenius function, authors found that most parameters are not significantly different, though small errors still exist. If the parameters are not different between two versions of the function, can those existing small errors due to a random chance? I would like to see how the fitted temperature response curves differ between the two functional forms, perhaps a figure that shows a sample dataset of Vcmax or Jmax and fitted curves for both functions overlaid on the same panel. If anything, this analysis will tell us that both functions perform equally well (or not). This may repeat with other versions of the Johnson et al., (1942) (see my comment 1).  Further, I would like to see how those “small errors” due to the missing term in Medlyn et al., (2002) scaled at stand or regional scale GPP estimates of a stand scale model or a terrestrial biosphere model. Currently, it is not convincing how such a small (1.8%) deviation in daily carbon balance really matter in modelling GPP at larger scales. 
+
+pick a sample dataset - think about modeling individuals plants... Compound interest calculation over 10 days
 
 4. L329-335 - I appreciate the arguments that authors have made here. But this manuscript not directly discuss or justify reasons for moving beyond the modified Arrhenius paradigm for modelling temperature response of process rates. Despite the so called “missing term” as identified by authors (but see my point no 2), the modified Arrhenius function and its alternative expressions have long been used as a robust function to quantify temperature response of photosynthetic capacities (Dreyer et al., 2001; Medlyn et al., 2002; Hikosaka et al., 2006; Kattge & Knorr 2007; Varhammar et al., 2015; Kumarathunge et al., 2019).  I believe that empirical approaches based on the original Johnson et al., (1942); such as Kattge & Knorr (2007) and updated recently by Kumarathunge et al (2019) do provide a robust formulation to quantify photosynthetic capacities across the full biological range of temperatures.  
 
