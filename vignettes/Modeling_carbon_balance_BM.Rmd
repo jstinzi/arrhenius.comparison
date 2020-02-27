@@ -984,3 +984,39 @@ jpeg("Figure 5.jpeg", width = 7.5, height = 7.5, units = "in", res = 600)
 grid.arrange(W1_HdVar_AR, W1_Hd200_AR, W12_HdVar_AR, W12_Hd200_AR,
              ncol = 2, nrow = 2)
 dev.off()   
+
+## Compound interest comparsions
+#Initial biomass of 1g
+#180 day growing season
+#Lowest % difference = 1.5% for week 12 fitted
+Medlyn = 0.0563 gC plant-1 day-1
+New = 0.0558 gC plant-1 day-1
+
+#Daily Interest
+FV <- PV*((1+i)^n
+
+FV = (1)*(1+(0.0558))^180
+FV
+
+Med <- 0.0558*180 = 10.044 g + 1 g = 11.044 g 
+New <- 0.0563*180 = 10.134 g + 1 g = 11.134 g 
+Diff <- <1% (0.815%)
+
+#Compound Interest
+P=1
+n=180
+R1=(0.0558)
+R2=(0.0563)
+
+A1=(P*(1+(R1/1))^n)
+A2=(P*(1+(R2/1))^n)
+A1
+A2
+
+Diff=((A2-A1)/((A1+A2)/2))*100
+Diff
+
+
+
+
+
