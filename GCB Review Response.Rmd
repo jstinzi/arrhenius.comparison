@@ -47,6 +47,8 @@ In Table 2, the first equation that appears on page 8 appears to be incorrect. I
 
 Report actual atkin and tjoelker equation where R1 = k25, R2 some type of k notation
 
+think about rectangular hyperbola model maybe...
+
 JOE
 
 194-... I don't think the headline result here should be changes in the fitting of each parameter. Since these temperature response equations are invariably applied in a strictly empirical fashion, all that matters is the fit of the overall function.
