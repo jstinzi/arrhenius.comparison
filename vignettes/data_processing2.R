@@ -22,7 +22,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Replicate",
                                  "T_growth"),
                         sep = "_")
-write.csv(fitted_data, "./fitted/nick_smith.csv")
+write.csv(fitted_data, "./fitted2/nick_smith.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -45,7 +45,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Target.Temp",
                                  "Shoot"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/scots_pine_tarvainen.csv")
+write.csv(fitted_data, "./fitted2/scots_pine_tarvainen.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -63,7 +63,8 @@ data <- unite(data, col = "ID", c("Curve",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -75,7 +76,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                         into = c("Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/walcroft peach.csv")
+write.csv(fitted_data, "./fitted2/walcroft peach.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -111,7 +112,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "CO2_Treat",
                                  "Water_treat"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/wtc1_Aci_processed.csv")
+write.csv(fitted_data, "./fitted2/wtc1_Aci_processed.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -151,7 +152,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Ttreatment",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/wtc4_photo_temp_all.csv")
+write.csv(fitted_data, "./fitted2/wtc4_photo_temp_all.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -174,7 +175,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                         into = c("Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/euc_pauciflora_mk.csv")
+write.csv(fitted_data, "./fitted2/euc_pauciflora_mk.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -211,7 +212,7 @@ data <- unite(data, col = "ID", c("Code",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -225,7 +226,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "location",
                                  "T_measurement"),
                         sep = "_")
-write.csv(fitted_data, "./fitted/great_photo_shortterm.csv")
+write.csv(fitted_data, "./fitted2/great_photo_shortterm.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -270,7 +271,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Season",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/gwwACidata_processed_new.csv")
+write.csv(fitted_data, "./fitted2/gwwACidata_processed_new.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -311,7 +312,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Species",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/hfe_ACidata_processed.csv")
+write.csv(fitted_data, "./fitted2/hfe_ACidata_processed.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -344,7 +345,7 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -356,7 +357,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Tree",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/hfe_An_Tdata_processed.csv")
+write.csv(fitted_data, "./fitted2/hfe_An_Tdata_processed.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -383,7 +384,7 @@ data <- unite(data, col = "ID", c("Curve",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -395,7 +396,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Month",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/hikosaka_aci_data.csv")
+write.csv(fitted_data, "./fitted2/hikosaka_aci_data.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -429,7 +430,7 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -441,7 +442,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/kelsey_cater_Aci_PuertoRico.csv")
+write.csv(fitted_data, "./fitted2/kelsey_cater_Aci_PuertoRico.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -475,7 +476,7 @@ data <- unite(data, col = "ID", c("PotID",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -487,7 +488,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/mike_aspinwall_corymbia_calophylla.V1.csv")
+write.csv(fitted_data, "./fitted2/mike_aspinwall_corymbia_calophylla.V1.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -524,7 +525,7 @@ data <- unite(data, col = "ID", c("Curve",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -537,7 +538,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Season",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/acitwtc4_cleaned.csv")
+write.csv(fitted_data, "./fitted2/acitwtc4_cleaned.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -574,7 +575,7 @@ data <- unite(data, col = "ID", c("species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -587,7 +588,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "date",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/alida_mao_Aci_PuertoRico.csv")
+write.csv(fitted_data, "./fitted2/alida_mao_Aci_PuertoRico.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -620,7 +621,7 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -632,7 +633,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/dillaway_etal.csv")
+write.csv(fitted_data, "./fitted2/dillaway_etal.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -666,7 +667,7 @@ data <- unite(data, col = "ID", c("Tree",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -678,7 +679,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Name",
                                  "T_measurement"),
                         sep = "_")
-write.csv(fitted_data, "./fitted/eucFace_data.csv")
+write.csv(fitted_data, "./fitted2/eucFace_data.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -715,7 +716,7 @@ data <- unite(data, col = "ID", c("Curve",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -728,7 +729,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Month",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/Tumbarumba_ACidata_processed.csv")
+write.csv(fitted_data, "./fitted2/Tumbarumba_ACidata_processed.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -762,7 +763,8 @@ data <- unite(data, col = "ID", c("Tree",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -774,7 +776,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Date",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/TumbarumbaGasex_Spot_Medlyn.csv")
+write.csv(fitted_data, "./fitted2/TumbarumbaGasex_Spot_Medlyn.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -807,7 +809,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -819,7 +822,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Chamber",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/WTC2_ACidata_processed.csv")
+write.csv(fitted_data, "./fitted2/WTC2_ACidata_processed.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -856,7 +859,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -869,7 +873,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "_")
-write.csv(fitted_data, "./fitted/WTC3_ACidata_processed.csv")
+write.csv(fitted_data, "./fitted2/WTC3_ACidata_processed.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -900,7 +904,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -911,7 +916,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "_")
-write.csv(fitted_data, "./fitted/Onoda_etal.csv")
+write.csv(fitted_data, "./fitted2/Onoda_etal.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -941,7 +946,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -952,7 +958,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "_")
-write.csv(fitted_data, "./fitted/Picea_mariana_way_etal.csv")
+write.csv(fitted_data, "./fitted2/Picea_mariana_way_etal.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -983,7 +989,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -994,7 +1001,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/Pieca_abies_tarvainen_etal.csv")
+write.csv(fitted_data, "./fitted2/Pieca_abies_tarvainen_etal.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1024,7 +1031,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1035,7 +1043,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/Pinus_densiflora_han_etal.csv")
+write.csv(fitted_data, "./fitted2/Pinus_densiflora_han_etal.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1065,7 +1073,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Patm), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1076,7 +1085,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/Pinus_radiata_Walcroft.csv")
+write.csv(fitted_data, "./fitted2/Pinus_radiata_Walcroft.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1107,7 +1116,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Patm), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1118,7 +1128,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/Pteada_Ellsworth.csv")
+write.csv(fitted_data, "./fitted2/Pteada_Ellsworth.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1148,7 +1158,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Pressure..kPa.), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1159,7 +1170,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/SIOP Leaf gas exchange Cernusak et al.csv")
+write.csv(fitted_data, "./fitted2/SIOP Leaf gas exchange Cernusak et al.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1188,7 +1199,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1199,7 +1211,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Rep",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/SlotWinter2017_NewPhyt.Data.csv")
+write.csv(fitted_data, "./fitted2/SlotWinter2017_NewPhyt.Data.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1230,7 +1242,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 Patm = mean(data$Press), fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1241,7 +1254,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/SlotWinterPCE_RawData_DiffusionCorrected.csv")
+write.csv(fitted_data, "./fitted2/SlotWinterPCE_RawData_DiffusionCorrected.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1272,7 +1285,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1283,7 +1297,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/SPRUCE_3_cohort_ACi_data.csv")
+write.csv(fitted_data, "./fitted2/SPRUCE_3_cohort_ACi_data.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1317,7 +1331,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1329,7 +1344,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Season",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/Strassemeyer.csv")
+write.csv(fitted_data, "./fitted2/Strassemeyer.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1363,7 +1378,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1375,7 +1391,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Season",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/Glycine_max_Harley_f2.csv")
+write.csv(fitted_data, "./fitted2/Glycine_max_Harley_f2.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1409,7 +1425,8 @@ data <- unite(data, col = "ID", c("Replicate",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1421,7 +1438,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Povanance",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/Great_Aci_data_Processed.csv")
+write.csv(fitted_data, "./fitted2/Great_Aci_data_Processed.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1455,7 +1472,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1467,7 +1485,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Season",
                                  "T_measurement"),
                         sep = "-")
-write.csv(fitted_data, "./fitted/Medlyn_etal_all.csv")
+write.csv(fitted_data, "./fitted2/Medlyn_etal_all.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1503,7 +1521,8 @@ data <- unite(data, col = "ID", c("Replicate",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE, Patm = mean(data$Press),
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1515,7 +1534,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Provenance",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/GHS39_GREAT_MAIN_ACiT_20160216-20160227_L0.csv")
+write.csv(fitted_data, "./fitted2/GHS39_GREAT_MAIN_ACiT_20160216-20160227_L0.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1548,7 +1567,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE, 
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1560,7 +1580,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Season",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/Betula_pendula_Pinus_sylvestris_wang_etal.csv")
+write.csv(fitted_data, "./fitted2/Betula_pendula_Pinus_sylvestris_wang_etal.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1596,7 +1616,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1608,7 +1629,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Season",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/Chamaecyparis obtusa_han_etal.csv")
+write.csv(fitted_data, "./fitted2/Chamaecyparis obtusa_han_etal.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1645,7 +1666,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE, Patm = mean(data$Press),
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1657,7 +1679,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Season",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/Daintree_ACidata_processed.csv")
+write.csv(fitted_data, "./fitted2/Daintree_ACidata_processed.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1690,7 +1712,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE, Patm = mean(data$Patm),
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1702,7 +1725,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Season",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/DreyerSevenSpp_final.csv")
+write.csv(fitted_data, "./fitted2/DreyerSevenSpp_final.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1741,7 +1764,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1753,7 +1777,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Temp",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/GHS30_Euc2-SxTxCO2xW_GEtempresponse_20090105-20090109_L1.csv")
+write.csv(fitted_data, "./fitted2/GHS30_Euc2-SxTxCO2xW_GEtempresponse_20090105-20090109_L1.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1786,7 +1810,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1798,7 +1823,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Season",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/AmazonACIdata_f.csv")
+write.csv(fitted_data, "./fitted2/AmazonACIdata_f.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1828,7 +1853,8 @@ data <- unite(data, col = "ID", c("Species",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1839,7 +1865,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/Angelica_Varhammar_tropical_species_with_gs.csv")
+write.csv(fitted_data, "./fitted2/Angelica_Varhammar_tropical_species_with_gs.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1872,7 +1898,8 @@ data <- unite(data, col = "ID", c("USDA_Species_Code",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1884,7 +1911,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "Curve",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/Arctic_A-Ci_curves_2012-2015_test_file.csv")
+write.csv(fitted_data, "./fitted2/Arctic_A-Ci_curves_2012-2015_test_file.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)
@@ -1923,7 +1950,8 @@ data <- unite(data, col = "ID", c("nameSp",
 fits <- fitacis(data, group = "ID", fitmethod = "bilinear",
                 fitTPU = TRUE,
                 Tcorrect = FALSE)
-for(i in length(fits):1){
+
+for(i in 1:length(fits)){
   if(is.na(fits[i])){
     fits[i] <- NULL
   }
@@ -1937,7 +1965,7 @@ fitted_data <- separate(fitted_data, col = "ID",
                                  "MeasuringSeason",
                                  "T_measurement"),
                         sep = "_-")
-write.csv(fitted_data, "./fitted/B4Warmed_Aci_temp_curves_clean.csv")
+write.csv(fitted_data, "./fitted2/B4Warmed_Aci_temp_curves_clean.csv")
 remove(data)
 remove(fits)
 remove(fitted_data)

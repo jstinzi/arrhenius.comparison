@@ -112,17 +112,38 @@ The study “A derivation error exists in the current implementation of the John
 I have a few observations the authors may wish to consider.
 1. My main frustration is the complete lack of reference to all the other forms of that Johnson et al., (1942) equation available in literature. A number of alternative functions have been used to model the temperature dependences of photosynthetic capacities; Vcmax and Jmax (see, for example, Harley et al. 1986; Long 1991; Harley et al. 1992; Harley & Baldocchi 1995; Lloyd et al. 1995). However, all these equations are actually just alternative expressions of basic Johnson et al., (1942). There is fundamentally no difference between these functions, and it is not clear the real reason for choosing Medlyn et al., (2002) for this study over the others. I would suggest that the authors should also review all the other forms of that equation and verify how different they all are and what fraction of a percent difference in carbon balance they make. I firmly think that such an evaluation is inevitable. 
 
+OUR RESPONSE: We thank the reviewer for the references. We would like to point out that there are, in fact, differences in the equations. First, we would
+like to address that Long, 1991 does not provide a form of Johnson et al
+(1942) - instead it provides a modified Arrhenius that make the
+exponential response even steeper than the original. Second, the Lloyd
+et al. 1995 equation is exactly the same as the Medlyn et al. 2002 when
+algebra is performed on the equations - we now make a specific note that
+the Medlyn et al. 2002 equation first appears here. As well, the Harley
+& Baldocchi 1995 Topt-based equation is the same as the one presented in
+Medlyn et al. 2002. We have since included the Topt equation as well,
+even though the output should be equivalent, it is often easier to fit
+the Topt version due to nonlinear curve fitting procedures.
+
+The Harley et al. 1986 and 1992 equations are similar to the Johnson et al. 
+1942 equation, differing amongst themselves by a single term. We have since 
+included these two equations in our analyses. In the process, we also uncovered
+another variant in Farquhar et al. 1980, which is similar to Harley et al. 1992.
+In any case, all of these equations differ from the original Johnson et al. 1942
+equation.
+
 JOE - look at other arhenius eqns, see if they work better?
 
 2. In the process of rederivation of the modified Arrhenius function, the authors defined that the term c’’ of the Johnson et al., (1947) as a second derivative of the rate and assumed it as a temperature independent constant (L89). If the rate of a given reaction is temperature dependent, it is not clear how the second derivative is not temperature dependent given the term c’’ is not explicitly defined in Johnson et al., (1942). Hence, it is not clear how the term c’’ cancelled out when relativizing the function to a reference temperature (compare Equations 6 & 7). 
 
-If we reword to an undefined constant...
+OUR RESPONSE: In reading the papers pointed out in point 1 and re-reading Johnson et al. 1942, c'' is actually a constant based on the mathematics (REFS). This is our mistake and we have since corrected it.
 
 3. When comparing the fitted temperature response parameters between the corrected and Medlyn et al., (2002) derivation of the modified Arrhenius function, authors found that most parameters are not significantly different, though small errors still exist. If the parameters are not different between two versions of the function, can those existing small errors due to a random chance? I would like to see how the fitted temperature response curves differ between the two functional forms, perhaps a figure that shows a sample dataset of Vcmax or Jmax and fitted curves for both functions overlaid on the same panel. If anything, this analysis will tell us that both functions perform equally well (or not). This may repeat with other versions of the Johnson et al., (1942) (see my comment 1).  Further, I would like to see how those “small errors” due to the missing term in Medlyn et al., (2002) scaled at stand or regional scale GPP estimates of a stand scale model or a terrestrial biosphere model. Currently, it is not convincing how such a small (1.8%) deviation in daily carbon balance really matter in modelling GPP at larger scales. 
 
 pick a sample dataset - think about modeling individuals plants... Compound interest calculation over 10 days
 
 4. L329-335 - I appreciate the arguments that authors have made here. But this manuscript not directly discuss or justify reasons for moving beyond the modified Arrhenius paradigm for modelling temperature response of process rates. Despite the so called “missing term” as identified by authors (but see my point no 2), the modified Arrhenius function and its alternative expressions have long been used as a robust function to quantify temperature response of photosynthetic capacities (Dreyer et al., 2001; Medlyn et al., 2002; Hikosaka et al., 2006; Kattge & Knorr 2007; Varhammar et al., 2015; Kumarathunge et al., 2019).  I believe that empirical approaches based on the original Johnson et al., (1942); such as Kattge & Knorr (2007) and updated recently by Kumarathunge et al (2019) do provide a robust formulation to quantify photosynthetic capacities across the full biological range of temperatures.  
+
+OUR RESPONSE: We have since refocused the manuscript...
 
 Minor 
 L 91 – Correct units of ΔS: J mol-1 K-1 (or kJ mol-1 K-1)
