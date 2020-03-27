@@ -116,7 +116,7 @@ modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             Temp = "Temp",
                                             Vcmax = "Vcmax_medlyn"),
                             leaf_area = leaf_area_1,
-                            phi = 0.08, #Campbell & Norman 1998
+                            phi = 0.85, #Campbell & Norman 1998
                             time_step = 3600) #3600 s/hr
 }
 
@@ -160,7 +160,7 @@ modelled2[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             Temp = "Temp",
                                             Vcmax = "Vcmax_new"),
                             leaf_area = leaf_area_1,
-                            phi = 0.08,
+                            phi = 0.85,
                             time_step = 3600)
 }
 
@@ -293,7 +293,7 @@ modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             Temp = "Temp",
                                             Vcmax = "Vcmax_medlyn"),
                             leaf_area = leaf_area_12,
-                            phi = 0.08,
+                            phi = 0.85,
                             time_step = 3600)
 }
 
@@ -337,7 +337,7 @@ modelled2[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             Temp = "Temp",
                                             Vcmax = "Vcmax_new"),
                             leaf_area = leaf_area_12,
-                            phi = 0.08,
+                            phi = 0.85,
                             time_step = 3600)
 }
 #Note, we will need a for loop that looks like this:
@@ -526,7 +526,7 @@ modelled2[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             Temp = "Temp",
                                             Vcmax = "Vcmax_new"),
                             leaf_area = leaf_area_1,
-                            phi = 0.08,
+                            phi = 0.85,
                             time_step = 3600)
 }
 
@@ -661,7 +661,7 @@ modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             Temp = "Temp",
                                             Vcmax = "Vcmax_medlyn"),
                             leaf_area = leaf_area_12,
-                            phi = 0.08,
+                            phi = 0.85,
                             time_step = 3600)
 }
 
@@ -705,7 +705,7 @@ modelled2[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             Temp = "Temp",
                                             Vcmax = "Vcmax_new"),
                             leaf_area = leaf_area_12,
-                            phi = 0.08,
+                            phi = 0.85,
                             time_step = 3600)
 }
 #Note, we will need a for loop that looks like this:
