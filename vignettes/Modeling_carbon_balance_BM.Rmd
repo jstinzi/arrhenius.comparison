@@ -38,7 +38,7 @@ easily since calculate_photo binds the environmental data to the physiology data
 #Hd = 200 kJ mol-1
 #Week 1 modeling - low root/leaf ratio
 #Remove octothorpe below to run chunk
-#```{r include = FALSE}
+```{r include = FALSE}
 data_env <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
@@ -195,7 +195,7 @@ lm(week_1_carbon_Hd200[week_1_carbon_Hd200$ID == "Medlyn",]$daily_plant_C ~ week
 
 #Statistics and graphical output for Week 1 (Hd = 200 kJ mol-1)
 #Remove octothorpe below to run chunk
-#```{r include = FALSE}
+```{r include = FALSE}
 #Additional column for daily plant A/R
 week_1_carbon_Hd200$daily_plant_AR <- (week_1_carbon_Hd200$daily_plant_photosynthesis/week_1_carbon_Hd200$daily_plant_respiration)
 week_1_carbon_Hd200$daily_plant_AR
@@ -223,7 +223,7 @@ abline(lm(week_1_carbon_Hd200[week_1_carbon_Hd200$ID == "New",]$daily_plant_AR ~
 
 #Week 12 modeling - high root/leaf ratio
 #Remove octothorpe below to run chunk
-#```{r include = FALSE}
+```{r include = FALSE}
 data <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
@@ -372,7 +372,7 @@ lm(week_12_carbon_Hd200[week_12_carbon_Hd200$ID == "Medlyn",]$daily_plant_C ~ we
 
 #Statistics and graphical output for Week 12 (Hd = 200 kJ mol-1)
 #Remove octothorpe below to run chunk
-#```{r include = FALSE}
+```{r include = FALSE}
 # Additional column for daily plant A/R
 week_12_carbon_Hd200$daily_plant_AR <- (week_12_carbon_Hd200$daily_plant_photosynthesis/week_12_carbon_Hd200$daily_plant_respiration)
 week_12_carbon_Hd200$daily_plant_AR
@@ -400,7 +400,7 @@ abline(lm(week_12_carbon_Hd200[week_12_carbon_Hd200$ID == "New",]$daily_plant_AR
 
 Merge both datasets and output
 #Remove octothorpe below to run chunk
-#```{r include = FALSE}
+```{r include = FALSE}
 carbon <- rbind(week_1_carbon, week_12_carbon)
 gasex <- rbind(week_1_ge, week_12_ge)
 write.csv(carbon, "carbon_Hd200.csv")
@@ -410,7 +410,7 @@ write.csv(gasex, "gasex_Hd200.csv")
 #Hd = fitted
 #Week 1 modeling - low root/leaf ratio
 #Remove octothorpe below to run chunk
-#```{r include = FALSE}
+```{r include = FALSE}
 data_env <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
@@ -481,7 +481,8 @@ modelled[[i]] <- calculate_photo(data_phys = data_phys[[i]],
                                             Temp = "Temp",
                                             Vcmax = "Vcmax_medlyn"),
                             leaf_area = leaf_area_1,
-                            phi = 0.08, #Campbell & Norman 1998
+                            #phi = 0.08, #Campbell & Norman 1998
+                            phi = 0.85, #CLM 5.0
                             time_step = 3600) #3600 s/hr
 }
 

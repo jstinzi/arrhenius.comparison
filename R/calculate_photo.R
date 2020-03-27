@@ -9,6 +9,7 @@
 #' @param g1 Slope of the Medlyn et al. (2011) stomatal conductance model
 #' @param leaf_area Leaf area in m^2
 #' @param phi Maximum quantum efficiency of CO2 assimilation
+#' @param theta Curvature of the light response
 #' @param time_step Number of seconds per unit time in the environmental data
 #'
 #' @return Calculates CO2 assimilation on a leaf and whole-plant level. Sums
@@ -36,6 +37,7 @@ calculate_photo <- function(data_phys, #physiology dataframe
                             alpha = 0.8,
                             g0 = 0.0225,
                             g1 = 7.7527,
+                            theta = 0.85,
                             leaf_area,
                             phi,
                             time_step
@@ -93,11 +95,21 @@ calculate_photo <- function(data_phys, #physiology dataframe
   Wc <- 
     data_phys$Vcmax[i] * (Ci[j - 1] - data_phys$GammaStar[i]) / 
     (Ci[j - 1] + data_phys$Km[i])
+  #Old equation
+  #Wj <-
+  #  min(data_phys$Jmax[i], alpha * phi * data_env$Qin[i] * 
+  #        (Ci[j - 1] - data_phys$GammaStar[i]) / 
+  #        (2 * data_phys$GammaStar[i] + Ci[j - 1]))
+  #rewrite equation
+  a <- theta
+  b <- - (0.5 * alpha * phi * data_env$Qin[i] + data_phys$Jmax[i])
+  c <- 0.5 * alpha * phi * theta * data_env$Qin[i] * data_phys$Jmax[i]
+  jetr <- min( ((-b + sqrt(b ^ 2 - 4 * a * c)) / (2 * a)),
+               ((-b - sqrt(b ^ 2 - 4 * a * c)) / (2 * a)))
+  Wj <- jetr * (Ci[j - 1] - data_phys$GammaStar[i]) /
+    (2 * data_phys$GammaStar[i] + Ci[j - 1])
+    
   
-  Wj <-
-    min(data_phys$Jmax[i], alpha * phi * data_env$Qin[i] * 
-          (Ci[j - 1] - data_phys$GammaStar[i]) / 
-          (2 * data_phys$GammaStar[i] + Ci[j - 1]))
   #Calculate gross photosynthesis as the minimum of Wc, Wj
   A_gross <- min(Wc, Wj)
   

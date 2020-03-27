@@ -14,6 +14,7 @@ calculate_photo(
   alpha = 0.8,
   g0 = 0.0225,
   g1 = 7.7527,
+  theta = 0.85,
   leaf_area,
   phi,
   time_step
@@ -32,6 +33,8 @@ calculate_photo(
 model in mol m-2 s-1}
 
 \item{g1}{Slope of the Medlyn et al. (2011) stomatal conductance model}
+
+\item{theta}{Curvature of the light response}
 
 \item{leaf_area}{Leaf area in m^2}
 
