@@ -42,10 +42,10 @@ easily since calculate_photo binds the environmental data to the physiology data
 data_env <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
-pars_v <- read.csv(system.file("extdata", "fits_v_2.csv", 
+pars_v <- read.csv(system.file("extdata", "fits_v_3.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
-pars_j <- read.csv(system.file("extdata", "fits_j_2.csv", 
+pars_j <- read.csv(system.file("extdata", "fits_j_3.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
 
@@ -227,10 +227,10 @@ abline(lm(week_1_carbon_Hd200[week_1_carbon_Hd200$ID == "New",]$daily_plant_AR ~
 data <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
-pars_v <- read.csv(system.file("extdata", "fits_v_2.csv", 
+pars_v <- read.csv(system.file("extdata", "fits_v_3.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
-pars_j <- read.csv(system.file("extdata", "fits_j_2.csv", 
+pars_j <- read.csv(system.file("extdata", "fits_j_3.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
 pars_v <- pars_v[pars_v$Hd == 200,]
@@ -414,14 +414,14 @@ write.csv(gasex, "gasex_Hd200.csv")
 data_env <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
-pars_v <- read.csv(system.file("extdata", "fits_v_2.csv", 
+pars_v <- read.csv(system.file("extdata", "fits_v_3.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
-pars_j <- read.csv(system.file("extdata", "fits_j_2.csv", 
+pars_j <- read.csv(system.file("extdata", "fits_j_3.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
-pars_v <- pars_v[pars_v$Hd != 200,]
-pars_j <- pars_v[pars_j$Hd != 200,]
+##pars_v <- pars_v[pars_v$Hd != 200,]
+##pars_j <- pars_v[pars_j$Hd != 200,]
 data_phys <- list(NULL)
 #Basically, we need a solid set of respiration data
 data_r <- calculate_r(data = data_env,
@@ -443,22 +443,22 @@ data_p <- calculate_p(G25 = 42.75, #Bernacchi et al. 2001
                       Km25 = 718.40, #Bernacchi et al. 2001
                       Km_Ea = 65.50828, #Bernacchi et al. 2001
                       Temp = data_env$Temp,
-                      Vcmax25_m = pars_v$k25_o[i],
-                      Vcmax_dS_m = pars_v$dS_o[i],
-                      Vcmax_Hd_m = pars_v$Hd_o[i],
-                      Vcmax_Ea_m = pars_v$Ea_o[i],
-                      Vcmax25_n = pars_v$k25[i],
-                      Vcmax_dS_n = pars_v$dS[i],
-                      Vcmax_Hd_n = pars_v$Hd[i],
-                      Vcmax_Ea_n = pars_v$Ea[i],
-                      Jmax25_m = pars_j$k25_o[i],
-                      Jmax_dS_m = pars_j$dS_o[i],
-                      Jmax_Hd_m = pars_j$Hd_o[i],
-                      Jmax_Ea_m = pars_j$Ea_o[i],
-                      Jmax25_n = pars_j$k25[i],
-                      Jmax_dS_n = pars_j$dS[i],
-                      Jmax_Hd_n = pars_j$Hd[i],
-                      Jmax_Ea_n = pars_j$Ea[i])
+                      Vcmax25_m = pars_v$k25.medlyn[i],
+                      Vcmax_dS_m = pars_v$delS.medlyn[i],
+                      Vcmax_Hd_m = pars_v$Hd.medlyn[i],
+                      Vcmax_Ea_m = pars_v$Ea.medlyn[i],
+                      Vcmax25_n = pars_v$k25.new[i],
+                      Vcmax_dS_n = pars_v$delS.new[i],
+                      Vcmax_Hd_n = pars_v$Hd.new[i],
+                      Vcmax_Ea_n = pars_v$Ea.new[i],
+                      Jmax25_m = pars_j$k25.medlyn[i],
+                      Jmax_dS_m = pars_j$delS.medlyn[i],
+                      Jmax_Hd_m = pars_j$Hd.medlyn[i],
+                      Jmax_Ea_m = pars_j$Ea.medlyn[i],
+                      Jmax25_n = pars_j$k25.new[i],
+                      Jmax_dS_n = pars_j$delS.new[i],
+                      Jmax_Hd_n = pars_j$Hd.new[i],
+                      Jmax_Ea_n = pars_j$Ea.new[i])
 data_p <- data_p[, 1:6] #Removes temp column to preclude issues later
 data_phys[[i]] <- cbind(data_r, data_p)
 }
@@ -562,17 +562,20 @@ lm(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "Medlyn",]$daily_plant_C ~ week
 
 #Statistics and graphical output for Week 1 (Hd Fit)
 #Remove octothorpe below to run chunk
-#```{r include = FALSE}
+```{r include = FALSE}
 # Additional column for daily plant A/R
 week_1_carbon_Hdfit$daily_plant_AR <- (week_1_carbon_Hdfit$daily_plant_photosynthesis/week_1_carbon_Hdfit$daily_plant_respiration)
 week_1_carbon_Hdfit$daily_plant_AR
 
 #Stats
 summary(lm(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "Medlyn",]$daily_plant_C ~ week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "New",]$daily_plant_C))
+lm(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "Medlyn",]$daily_plant_C ~ week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "New",]$daily_plant_C)
 
 summary(lm(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "Medlyn",]$daily_plant_photosynthesis ~ week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "New",]$daily_plant_photosynthesis))
+lm(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "Medlyn",]$daily_plant_photosynthesis ~ week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "New",]$daily_plant_photosynthesis)
 
 summary(lm(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "Medlyn",]$daily_plant_AR ~ week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "New",]$daily_plant_AR))
+lm(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "Medlyn",]$daily_plant_AR ~ week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "New",]$daily_plant_AR)
 
 #Basic Graphs
 plot(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "New",]$daily_plant_C ~ week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "Medlyn",]$daily_plant_C,
@@ -590,18 +593,18 @@ abline(lm(week_1_carbon_Hdfit[week_1_carbon_Hdfit$ID == "New",]$daily_plant_AR ~
 
 #Week 12 modeling - high root/leaf ratio
 #Remove octothorpe below to run chunk
-#```{r include = FALSE}
+```{r include = FALSE}
 data <- read.csv(system.file("extdata", "env_data.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
-pars_v <- read.csv(system.file("extdata", "fits_v_2.csv", 
+pars_v <- read.csv(system.file("extdata", "fits_v_3.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
-pars_j <- read.csv(system.file("extdata", "fits_j_2.csv", 
+pars_j <- read.csv(system.file("extdata", "fits_j_3.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
-pars_v <- pars_v[pars_v$Hd != 200,]
-pars_j <- pars_v[pars_j$Hd != 200,]
+##pars_v <- pars_v[pars_v$Hd != 200,]
+#pars_j <- pars_v[pars_j$Hd != 200,]
 data_phys <- list(NULL)
 #Basically, we need a solid set of respiration data
 data_r <- calculate_r(data = data,
@@ -623,22 +626,22 @@ data_p <- calculate_p(G25 = 42.75,
                       Km25 = 718.40,
                       Km_Ea = 65.50828,
                       Temp = data$Temp,
-                      Vcmax25_m = pars_v$k25_o[i],
-                      Vcmax_dS_m = pars_v$dS_o[i],
-                      Vcmax_Hd_m = pars_v$Hd_o[i],
-                      Vcmax_Ea_m = pars_v$Ea_o[i],
-                      Vcmax25_n = pars_v$k25[i],
-                      Vcmax_dS_n = pars_v$dS[i],
-                      Vcmax_Hd_n = pars_v$Hd[i],
-                      Vcmax_Ea_n = pars_v$Ea[i],
-                      Jmax25_m = pars_j$k25_o[i],
-                      Jmax_dS_m = pars_j$dS_o[i],
-                      Jmax_Hd_m = pars_j$Hd_o[i],
-                      Jmax_Ea_m = pars_j$Ea_o[i],
-                      Jmax25_n = pars_j$k25[i],
-                      Jmax_dS_n = pars_j$dS[i],
-                      Jmax_Hd_n = pars_j$Hd[i],
-                      Jmax_Ea_n = pars_j$Ea[i])
+                      Vcmax25_m = pars_v$k25.medlyn[i],
+                      Vcmax_dS_m = pars_v$delS.medlyn[i],
+                      Vcmax_Hd_m = pars_v$Hd.medlyn[i],
+                      Vcmax_Ea_m = pars_v$Ea.medlyn[i],
+                      Vcmax25_n = pars_v$k25.new[i],
+                      Vcmax_dS_n = pars_v$delS.new[i],
+                      Vcmax_Hd_n = pars_v$Hd.new[i],
+                      Vcmax_Ea_n = pars_v$Ea.new[i],
+                      Jmax25_m = pars_j$k25.medlyn[i],
+                      Jmax_dS_m = pars_j$delS.medlyn[i],
+                      Jmax_Hd_m = pars_j$Hd.medlyn[i],
+                      Jmax_Ea_m = pars_j$Ea.medlyn[i],
+                      Jmax25_n = pars_j$k25.new[i],
+                      Jmax_dS_n = pars_j$delS.new[i],
+                      Jmax_Hd_n = pars_j$Hd.new[i],
+                      Jmax_Ea_n = pars_j$Ea.new[i])
 data_p <- data_p[, 1:6] #Removes temp column to preclude issues later
 data_phys[[i]] <- cbind(data_r, data_p)
 data_phys
@@ -739,7 +742,7 @@ summary(lm(week_12_carbon_Hdfit[week_12_carbon_Hdfit$ID == "Medlyn",]$daily_plan
 
 #Statistics and graphical output for Week 12 (Hd fit)
 #Remove octothorpe below to run chunk
-#```{r include = FALSE}
+```{r include = FALSE}
 # Additional column for daily plant A/R
 week_12_carbon_Hdfit$daily_plant_AR <- (week_12_carbon_Hdfit$daily_plant_photosynthesis/week_12_carbon_Hdfit$daily_plant_respiration)
 week_12_carbon_Hdfit$daily_plant_AR
@@ -767,20 +770,25 @@ abline(lm(week_12_carbon_Hdfit[week_12_carbon_Hdfit$ID == "New",]$daily_plant_AR
 
 Merge both datasets and output
 #Remove octothorpe below to run chunk
-#```{r include = FALSE}
-carbon <- rbind(week_1_carbon, week_12_carbon)
+```{r include = FALSE}
+carbon <- rbind(week_1_carbon_Hdfit, week_12_carbon_Hdfit)
 gasex <- rbind(week_1_ge, week_12_ge)
+write.csv(week_1_carbon_Hdfit, "carbon_week1.csv")
+write.csv(week_12_carbon_Hdfit, "carbon_week12.csv")
 write.csv(carbon, "carbon_HdFit.csv")
 write.csv(gasex, "gasex_HdFit.csv")
 ```
 #Remove octothorpe below to run chunk
 #```{r include = FALSE}
 #More complex ggplot graphs
-FigData <- read.csv(system.file("extdata", "FigModelingData.csv", 
+
+FigData <- read.csv(system.file("extdata", "FigModelingData2.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
                  
 #Daily C Gain Graphs
+names(FigData)
+
 W1_Hd200_CGain <- ggplot(data = FigData, aes(x = plant_C_.medlyn_W1_fix, y = plant_C_new_W1_fix)) +
   ggtitle(label = expression("b)"~"Low"~"R"~"With"~"Fixed"~H[d])) +
   geom_point(size = 3, alpha = 0.7)+
@@ -813,9 +821,11 @@ W12_Hd200_CGain <- ggplot(data = FigData, aes(x = plant_C_medlyn_W12_fix, y = pl
        y=expression('New'~'Total'~'C'~'Gain'~"(gC"~"plant"^{-1}~"day"^{-1}*")"))
 W12_Hd200_CGain
 
+library(ggplot2)
+
 names(FigData)
-W1_HdVar_CGain <- ggplot(data = FigData, aes(x = plant_C_.medlyn_W1_var, y = plant_C_.new_W1_var)) +
-  ggtitle(label = expression("a)"~"Low"~"R"~"With"~"Variable"~H[d])) +
+W1_HdVar_CGain <- ggplot(data = FigData, aes(x = week1_C_new, y = week1_C_med) +
+  ggtitle(label = expression("e)"~"Low"~"R"~"With"~"Variable"~H[d])) +
   geom_point(size = 3, alpha = 0.7)+
   geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
   geom_abline(slope = 0.983546, intercept = 0.001233, size = 2, linetype = "dashed", colour = "Gray45")+

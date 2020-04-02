@@ -5,7 +5,7 @@ date: "27/01/2020"
 output: html_document
 ---
 
-```{r include = FALSE}
+#```{r include = FALSE}
 ABQ2 <- read.csv(system.file("extdata", "env_data_ABQ_2.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)
@@ -17,7 +17,6 @@ ABQ2$Month_f = factor(ABQ2$Month, levels=c('May','August','October'))
 
 ## Diff Environmental Light Intensity
 ABQ_light <- ggplot(data = ABQ2, aes(x = Hour, y = Qin))+
-  ggtitle(label = expression("e)"~"Environmental"~"Light"~"Intensity"~"in"~"ABQ")) +
   geom_line(mapping = NULL, data = NULL, stat = "identity",
             position = "identity", colour = "Gray45", size = 1,
             lineend = "butt", linejoin = "round",
@@ -25,10 +24,11 @@ ABQ_light <- ggplot(data = ABQ2, aes(x = Hour, y = Qin))+
             inherit.aes = TRUE)+
   geom_point(size = 2)+
   theme_bw()+
-  theme(panel.grid = element_blank())+
+  theme(panel.grid = element_blank(),
+        panel.spacing.x=unit(0,"lines"))+
   labs(x = expression("Hourly Time Points"),
        y = expression("Q"[In]~"("~mu*mol~m^{-2}~s^{-1}*")"))+ 
-  ylim(0,2850)+
+  ylim(0,3000)+
   facet_grid(~ Month_f)
 ABQ_light
 
@@ -37,7 +37,6 @@ LDN <- read.csv(system.file("extdata", "env_data_London.csv",
                 stringsAsFactors = FALSE)
 LDN$Month_f = factor(LDN$Month, levels=c('May','August','October'))
 LDN_light <- ggplot(data = LDN, aes(x = Hour, y = Qin))+
-  ggtitle(label = expression("f)"~"Environmental"~"Light"~"Intensity"~"in"~"LDN")) +
   geom_line(mapping = NULL, data = NULL, stat = "identity",
             position = "identity", colour = "Gray45", size = 1,
             lineend = "butt", linejoin = "round",
@@ -45,17 +44,21 @@ LDN_light <- ggplot(data = LDN, aes(x = Hour, y = Qin))+
             inherit.aes = TRUE)+
   geom_point(size = 2)+
   theme_bw() +
-  theme(panel.grid = element_blank())+
+  theme(panel.grid = element_blank(),
+        panel.spacing.x=unit(0,"lines"),
+        axis.ticks.y=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank())+
   labs(x = expression("Hourly Time Points"),
        y = expression("Q"[In]~"("~mu*mol~m^{-2}~s^{-1}*")"))+ 
-  ylim(0,2850)+
+  ylim(0,3000)+
   facet_grid(~ Month_f)
 LDN_light
 
 
 ## Different Environmental Temp
 ABQ_temp <- ggplot(data = ABQ2, aes(x = Hour, y = Temp_C))+
-  ggtitle(label = expression("a)"~"Environmental"~"Temperature"~"in"~"ABQ")) +
+  ggtitle(label = expression("ABQ")) +
   geom_line(mapping = NULL, data = NULL, stat = "identity",
             position = "identity", colour = "Gray45", size = 1,
             lineend = "butt", linejoin = "round",
@@ -63,15 +66,20 @@ ABQ_temp <- ggplot(data = ABQ2, aes(x = Hour, y = Temp_C))+
             inherit.aes = TRUE)+
   geom_point(size = 2)+
   theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
   ylim(-3,46)+
-  theme(panel.grid = element_blank())+
+  theme(panel.grid = element_blank(),
+        panel.spacing.x=unit(0,"lines"),
+         axis.ticks.x=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank())+
   labs(x = expression("Hourly Time Points"),
        y = expression('Temperature'~'('*degree*C*')'))+ 
   facet_grid(~ Month_f)
 ABQ_temp
 
 LDN_temp <- ggplot(data = LDN, aes(x = Hour, y = Temp_C))+
-  ggtitle(label = expression("b)"~"Environmental"~"Temperature"~"in"~"LDN")) +
+  ggtitle(label = expression("LDN")) +
   geom_line(mapping = NULL, data = NULL, stat = "identity",
             position = "identity", colour = "Gray45", size = 1,
             lineend = "butt", linejoin = "round",
@@ -79,7 +87,15 @@ LDN_temp <- ggplot(data = LDN, aes(x = Hour, y = Temp_C))+
             inherit.aes = TRUE)+
   geom_point(size = 2)+
   theme_bw() +
-  theme(panel.grid = element_blank())+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank(),
+        panel.spacing.x=unit(0,"lines"),
+         axis.ticks.x=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+         axis.ticks.y=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank())+
   labs(x = expression("Hourly Time Points"),
        y = expression('Temperature'~'('*degree*C*')'))+  
   ylim(-3,46)+
@@ -88,7 +104,6 @@ LDN_temp
 
 ## Environmental VPD
 ABQ_vpd <- ggplot(data = ABQ2, aes(x = Hour, y = VPD))+
-  ggtitle(label = expression("c)"~"Environmental"~"VPD"~"in"~"ABQ")) +
   geom_line(mapping = NULL, data = NULL, stat = "identity",
             position = "identity", colour = "Gray45", size = 1,
             lineend = "butt", linejoin = "round",
@@ -96,15 +111,18 @@ ABQ_vpd <- ggplot(data = ABQ2, aes(x = Hour, y = VPD))+
             inherit.aes = TRUE)+
   geom_point(size = 2)+
   theme_bw()+
-  ylim(0,10)+
-  theme(panel.grid = element_blank())+
+  ylim(0,11)+
+  theme(panel.grid = element_blank(),
+        panel.spacing.x=unit(0,"lines"),
+         axis.ticks.x=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank())+
   labs(x = expression("Hourly Time Points"),
        y = expression("Vapour Pressure Deficit (kPa)"))+ 
   facet_grid(~ Month_f)
 ABQ_vpd
 
 LDN_vpd <- ggplot(data = LDN, aes(x = Hour, y = VPD))+
-  ggtitle(label = expression("d)"~"Environmental"~"VPD"~"in"~"LDN")) +
   geom_line(mapping = NULL, data = NULL, stat = "identity",
             position = "identity", colour = "Gray45", size = 1,
             lineend = "butt", linejoin = "round",
@@ -112,8 +130,15 @@ LDN_vpd <- ggplot(data = LDN, aes(x = Hour, y = VPD))+
             inherit.aes = TRUE)+
   geom_point(size = 2)+
   theme_bw() +
-  ylim(0,10)+
-  theme(panel.grid = element_blank())+
+  ylim(0,11)+
+  theme(panel.grid = element_blank(),
+        panel.spacing.x=unit(0,"lines"),
+         axis.ticks.x=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+         axis.ticks.y=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank())+
   labs(x = expression("Hourly Time Points"),
        y = expression("Vapour Pressure Deficit (kPa)"))+ 
   facet_grid(~ Month_f)
@@ -125,4 +150,33 @@ grid.arrange(ABQ_temp, LDN_temp, ABQ_vpd, LDN_vpd, ABQ_light, LDN_light,
              ncol = 2, nrow = 3)
 dev.off()    
 
+A <- ABQ_temp
+B <- LDN_temp
+C <- ABQ_vpd
+D <- LDN_vpd
+E <- ABQ_light
+F <- LDN_light
+
+gA <- ggplotGrob(A)  
+gB <- ggplotGrob(B)
+gC <- ggplotGrob(C)
+gD <- ggplotGrob(D)
+gE <- ggplotGrob(E)
+gF <- ggplotGrob(F)
+
+# Arrange the four charts
+grid.arrange(gA, gB, gC, gD, gE, gF, ncol=2, nrow=3)
+
+# Combine the plots   
+graph = cbind(rbind(gA, gC, gE, size = "last"), rbind(gB, gD, gF, size = "last"), size = "first")
+
+# draw it
+jpeg("Figure 1.jpeg", width = 24, height = 26, units = "cm", res = 600)
+
+grid.newpage()
+
+grid.draw(graph)
+
+dev.off()
 ```
+
