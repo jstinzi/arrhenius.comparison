@@ -14,7 +14,7 @@ calculate_photo(
   alpha = 0.8,
   g0 = 0.0225,
   g1 = 7.7527,
-  theta = 0.85,
+  theta = 0.7,
   leaf_area,
   phi,
   time_step

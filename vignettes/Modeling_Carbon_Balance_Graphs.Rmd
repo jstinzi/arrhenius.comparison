@@ -1,0 +1,510 @@
+---
+title: "Modeling_Carbon_Balance_Graphs"
+author: "Joseph R. Stinziano"
+date: "19/04/2020"
+output: html_document
+vignette: >
+ %\VignetteIndexEntry{Modeling_Carbon_Balance_Graphs}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+FigData <- read.csv("FigModelingData2.csv")
+VcmaxData <- read.csv("fits_v_3.csv")
+JmaxData <- read.csv("fits_j_3.csv")
+names(FigData)
+attach(FigData)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+
+## MODELING FIGURE: FIG. 4
+LowR_DailyA <- ggplot(data = FigData, aes(x = week1_photo_new, y = week1_photo_med)) +
+  ggtitle(label = expression("Low R")) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 0.819, intercept = 0.018, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1), position = "left", limits = c(-0.3, 0.7))+
+  scale_x_continuous(labels = scales::number_format(accuracy = 0.1), position = "bottom", limits = c(-0.3, 0.7))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(x=expression('Eq.10'~'total'~'daily'~'A'~"(gC"~"plant"^{-1}~"day"^{-1}*")"),
+       y=expression('Eq.3'~'total'~'daily'~'A'~"(gC"~"plant"^{-1}~"day"^{-1}*")"))
+LowR_DailyA
+A <- LowR_DailyA
+
+HighR_DailyA <- ggplot(data = FigData, aes(x = week12_photo_new, y = week12_photo_med)) +
+  ggtitle(label = expression("High R")) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 0.819, intercept = 0.031, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1), position = "left", limits = c(-0.3, 0.7))+
+  scale_x_continuous(labels = scales::number_format(accuracy = 0.1), position = "bottom", limits = c(-0.3, 0.7))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(x=expression('Eq.10'~'total'~'daily'~'A'~"(gC"~"plant"^{-1}~"day"^{-1}*")"),
+       y=expression('Eq.3'~'total'~'daily'~'A'~"(gC"~"plant"^{-1}~"day"^{-1}*")"))
+HighR_DailyA
+B <- HighR_DailyA
+
+LowR_DailyC <- ggplot(data = FigData, aes(x = week1_C_new, y = week1_C_med)) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 0.836, intercept = 0.012, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1), position = "left", limits = c(-0.5, 0.8))+
+  scale_x_continuous(labels = scales::number_format(accuracy = 0.1), position = "bottom", limits = c(-0.5, 0.8))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(x=expression('Eq.10'~'total'~'C'~'gain'~"(gC"~"plant"^{-1}~"day"^{-1}*")"),
+       y=expression('Eq.3'~'total'~'C'~'gain'~"(gC"~"plant"^{-1}~"day"^{-1}*")"))
+LowR_DailyC
+C <- LowR_DailyC
+
+HighR_DailyC <- ggplot(data = FigData, aes(x = week12_C_new, y = week12_C_med)) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 0.859, intercept = 0.011, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1), position = "left", limits = c(-0.5, 0.8))+
+  scale_x_continuous(labels = scales::number_format(accuracy = 0.1), position = "bottom", limits = c(-0.5, 0.8))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(x=expression('Eq.10'~'total'~'C'~'gain'~"(gC"~"plant"^{-1}~"day"^{-1}*")"),
+       y=expression('Eq.3'~'total'~'C'~'gain'~"(gC"~"plant"^{-1}~"day"^{-1}*")"))
+HighR_DailyC
+D <- HighR_DailyC
+
+names(FigData)
+LowR_DailyAR <- ggplot(data = FigData, aes(x = week1_AR_new, y = week1_AR_med)) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 0.982, intercept = 0.146, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw() +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1), position = "left", limits = c(-5, 25))+
+  scale_x_continuous(labels = scales::number_format(accuracy = 0.1), position = "bottom", limits = c(-5, 25))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(x=expression('Eq.10'~'total'~'daily'~'A/R'),
+       y=expression('Eq.3'~'total'~'daily'~'A/R'))
+LowR_DailyAR
+E <- LowR_DailyAR
+
+HighR_DailyAR <- ggplot(data = FigData, aes(x = week12_AR_new, y = week12_AR_med)) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 0.982, intercept = 0.082, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw() +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1), position = "left", limits = c(-5, 25))+
+  scale_x_continuous(labels = scales::number_format(accuracy = 0.1), position = "bottom", limits = c(-5, 25))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(x=expression('Eq.10'~'total'~'daily'~'A/R'),
+       y=expression('Eq.3'~'total'~'daily'~'A/R'~'\n'))
+HighR_DailyAR
+F <- HighR_DailyAR
+
+gA <- ggplotGrob(A)  
+gB <- ggplotGrob(B)
+gC <- ggplotGrob(C)
+gD <- ggplotGrob(D)
+gE <- ggplotGrob(E)
+gF <- ggplotGrob(F)
+
+# Arrange the four charts
+grid.arrange(gA, gB, gC, gD, gE, gF, ncol=2, nrow=3)
+
+# Combine the plots   
+g = cbind(rbind(gA, gC, gE, size = "last"), rbind(gB, gD, gF, size = "last"), size = "first")
+
+# draw it
+jpeg("Joe-Figure4.jpeg", width = 18, height = 22, units = "cm", res = 600)
+grid.newpage()
+grid.draw(g)
+dev.off()
+
+## JMAX/VCMAX FIGURE: FIG. 3
+names(VcmaxData)
+Vcmax_Ea <- ggplot(data = VcmaxData, aes(x = Ea.new, y = Ea.medlyn)) +
+  ggtitle(label = expression("V"[cmax])) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 0.847, intercept = 9.73, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(x = expression("Eq.10"~E[a]~"(kJ"~mol^{-1}*")"),
+       y = expression("Eq.3"~E[a]~"(kJ"~mol^{-1}*")"))
+Vcmax_Ea
+A <- Vcmax_Ea
+
+Jmax_Ea <- ggplot(data = JmaxData, aes(x = Ea.new, y = Ea.medlyn)) +
+  ggtitle(label = expression("J"[max])) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 0.832, intercept = 5.98, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(x = expression("Eq.10"~E[a]~"(kJ"~mol^{-1}*")"),
+       y = expression("Eq.3"~E[a]~"(kJ"~mol^{-1}*")"))
+Jmax_Ea
+B <- Jmax_Ea
+
+names(VcmaxData)
+Vcmax_DeltaS <- ggplot(data = VcmaxData, aes(x = delS.new, y = delS.medlyn)) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 1, intercept = 0, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(y = expression("Eq.3"~Delta*"S"~"(kJ"~mol^{-1}*~K^{-1}*")"),
+       x = expression("Eq.10"~Delta*"S"~"(kJ"~mol^{-1}*~K^{-1}*")")) 
+Vcmax_DeltaS
+C <- Vcmax_DeltaS
+
+Jmax_DeltaS <- ggplot(data = JmaxData, aes(x = delS.new, y = delS.medlyn)) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 1, intercept = 0, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(y = expression("Eq.3"~Delta*"S"~"(kJ"~mol^{-1}*~K^{-1}*")"),
+       x = expression("Eq.10"~Delta*"S"~"(kJ"~mol^{-1}*~K^{-1}*")")) 
+Jmax_DeltaS
+D <- Jmax_DeltaS
+
+names(VcmaxData)
+Vcmax_K25 <- ggplot(data = VcmaxData, aes(x = k25.new, y = k25.medlyn)) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 1, intercept = 0, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(y = expression("Eq.3"~k[25]~"("*mu*mol~m^{-2}~s^{-1}*")"),
+       x = expression("Eq.10"~k[25]~"("*mu*mol~m^{-2}~s^{-1}*")")) 
+Vcmax_K25
+E <- Vcmax_K25
+
+Jmax_K25 <- ggplot(data = JmaxData, aes(x = k25.new, y = k25.medlyn)) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 1, intercept = 0, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(y = expression("Eq.3"~k[25]~"("*mu*mol~m^{-2}~s^{-1}*")"),
+       x = expression("Eq.10"~k[25]~"("*mu*mol~m^{-2}~s^{-1}*")")) 
+Jmax_K25
+F <- Jmax_K25
+
+names(VcmaxData)
+Vcmax_Hd <- ggplot(data = VcmaxData, aes(x = Hd.new, y = Hd.medlyn)) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 1, intercept = 0, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(y = expression("Eq.3"~H[d]~"(kJ"~mol^{-1}*")"),
+       x = expression("Eq.10"~H[d]~"(kJ"~mol^{-1}*")")) 
+Vcmax_Hd
+G <- Vcmax_Hd
+
+Jmax_Hd <- ggplot(data = JmaxData, aes(x = Hd.new, y = Hd.medlyn)) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 0.952, intercept = 31.48 , size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(y = expression("Eq.3"~H[d]~"(kJ"~mol^{-1}*")"),
+       x = expression("Eq.10"~H[d]~"(kJ"~mol^{-1}*")")) 
+H <- Jmax_Hd
+
+gA <- ggplotGrob(A)  
+gB <- ggplotGrob(B)
+gC <- ggplotGrob(C)
+gD <- ggplotGrob(D)
+gE <- ggplotGrob(E)
+gF <- ggplotGrob(F)
+gG <- ggplotGrob(G)
+gH <- ggplotGrob(H)
+
+# Arrange the four charts
+grid.arrange(gA, gB, gC, gD, gE, gF, gG, gH, ncol=2, nrow=4)
+
+# Combine the plots   
+g = cbind(rbind(gA, gC, gE, gG, size = "last"), rbind(gB, gD, gF, gH, size = "last"), size = "first")
+
+# draw it
+jpeg("Joe-Figure3.jpeg", width = 18, height = 26, units = "cm", res = 600)
+grid.newpage()
+grid.draw(g)
+dev.off()
+
+## NEW JOE FIGURE: FIGURE 2
+names(VcmaxData)
+Vcmax_BIC <- ggplot(data = VcmaxData, aes(x = BIC.new, y = BIC.medlyn)) +
+  ggtitle(label = expression("V"[cmax])) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 1, intercept = 0, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(y = expression("Eq.3"~BIC),
+       x = expression("Eq.10"~BIC))
+Vcmax_BIC
+A <- Vcmax_BIC
+
+Jmax_BIC <- ggplot(data = JmaxData, aes(x = BIC.new, y = BIC.medlyn)) +
+  ggtitle(label = expression("J"[max])) +
+  geom_point(size = 3, alpha = 0.7)+
+  geom_abline(slope = 1, intercept = 0, size = 1, colour = "Black") +
+  geom_abline(slope = 1, intercept = 0, size = 2, linetype = "dashed", colour = "Gray45")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(panel.grid = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))+
+  labs(x = expression("Eq.10"~BIC),
+       y = expression("Eq.3"~BIC))
+Jmax_BIC
+B <- Jmax_BIC
+
+Arrh_pars <- read.csv("Arrh_pars.csv")
+ElymusData <- read.csv("elymus_ex.csv")
+Elymus_Jmax <- ggplot(ElymusData, aes(x = T_measurement, y = Jmax)) +
+  labs(x = "Temperature (°C)",
+       y = expression(J[max]~"("*mu*mol~m^{-2}~s^{-1}*")")) +
+  geom_smooth(method = 'lm',
+              formula = y ~ Arrh_medlyn(k25 = Arrh_pars[Arrh_pars$variable.medlyn == "Jmax" &
+                                                          Arrh_pars$ID.medlyn == "Elymus canadensis_r1_25",]$k25.medlyn, 
+                                        delS = Arrh_pars[Arrh_pars$variable.medlyn == "Jmax" &
+                                                    Arrh_pars$ID.medlyn == "Elymus canadensis_r1_25",]$delS.medlyn,
+                                        Ea = Arrh_pars[Arrh_pars$variable.medlyn == "Jmax" &
+                                                         Arrh_pars$ID.medlyn == "Elymus canadensis_r1_25",]$Ea.medlyn,
+                                        Hd = Arrh_pars[Arrh_pars$variable.medlyn == "Jmax" &
+                                                         Arrh_pars$ID.medlyn == "Elymus canadensis_r1_25",]$Hd.medlyn,
+                                        Temp = x + 273.15),
+              aes(colour = "Red"), se = FALSE, size = 2,
+              show.legend = TRUE) +
+  geom_smooth(method = 'lm',
+              formula = y ~ Arrh_new(k25 = Arrh_pars[Arrh_pars$variable.new == "Jmax" &
+                                                       Arrh_pars$ID.new == "Elymus canadensis_r1_25",]$k25.new, 
+                                     delS = Arrh_pars[Arrh_pars$variable.new == "Jmax" &
+                                                        Arrh_pars$ID.new == "Elymus canadensis_r1_25",]$delS.new,
+                                     Ea = Arrh_pars[Arrh_pars$variable.new == "Jmax" &
+                                                      Arrh_pars$ID.new == "Elymus canadensis_r1_25",]$Ea.new,
+                                     Hd = Arrh_pars[Arrh_pars$variable.new == "Jmax" &
+                                                      Arrh_pars$ID.new == "Elymus canadensis_r1_25",]$Hd.new,
+                                     Temp = x + 273.15),
+              aes(colour = "Cyan"), se = FALSE, linetype = "dashed",
+              size = 2, show.legend = TRUE) +
+  scale_colour_manual(values = c("Red", "Cyan"),
+                      labels = c("Eq. 3", "Eq. 10")) +
+  geom_point(size = 3)+
+  theme_bw() +
+  theme(panel.grid = element_blank())+
+  theme(legend.position = 'none',
+        legend.title = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+      axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+      axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))
+Elymus_Jmax
+D <- Elymus_Jmax
+
+Elymus_Vcmax <- ggplot(ElymusData, aes(x = T_measurement, y = Vcmax)) +
+  labs(x = "Temperature (°C)",
+       y = expression(V[cmax]~"("*mu*mol~m^{-2}~s^{-1}*")")) +
+  geom_smooth(method = 'lm',
+              formula = y ~ Arrh_medlyn(k25 = Arrh_pars[Arrh_pars$variable.medlyn == "Vcmax" &
+                                                          Arrh_pars$ID.medlyn == "Elymus canadensis_r1_25",]$k25.medlyn, 
+                                        delS = Arrh_pars[Arrh_pars$variable.medlyn == "Vcmax" &
+                                                           Arrh_pars$ID.medlyn == "Elymus canadensis_r1_25",]$delS.medlyn,
+                                        Ea = Arrh_pars[Arrh_pars$variable.medlyn == "Vcmax" &
+                                                         Arrh_pars$ID.medlyn == "Elymus canadensis_r1_25",]$Ea.medlyn,
+                                        Hd = Arrh_pars[Arrh_pars$variable.medlyn == "Vcmax" &
+                                                         Arrh_pars$ID.medlyn == "Elymus canadensis_r1_25",]$Hd.medlyn,
+                                        Temp = x + 273.15),
+              aes(colour = "Red"), se = FALSE, size = 2,
+              show.legend = TRUE) +
+  geom_smooth(method = 'lm',
+              formula = y ~ Arrh_new(k25 = Arrh_pars[Arrh_pars$variable.new == "Vcmax" &
+                                                       Arrh_pars$ID.new == "Elymus canadensis_r1_25",]$k25.new, 
+                                     delS = Arrh_pars[Arrh_pars$variable.new == "Vcmax" &
+                                                        Arrh_pars$ID.new == "Elymus canadensis_r1_25",]$delS.new,
+                                     Ea = Arrh_pars[Arrh_pars$variable.new == "Vcmax" &
+                                                      Arrh_pars$ID.new == "Elymus canadensis_r1_25",]$Ea.new,
+                                     Hd = Arrh_pars[Arrh_pars$variable.new == "Vcmax" &
+                                                      Arrh_pars$ID.new == "Elymus canadensis_r1_25",]$Hd.new,
+                                     Temp = x + 273.15),
+              aes(colour = "Cyan"), se = FALSE, linetype = "dashed",
+              size = 2, show.legend = TRUE) +
+  scale_colour_manual(values = c("Red", "Cyan"),
+                      labels = c("Eq. 3", "Eq. 10")) +
+  geom_point(size = 3)+
+  theme_bw() +
+  theme(panel.grid = element_blank())+
+  theme(legend.position = 'none',
+        legend.title = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))
+Elymus_Vcmax
+C <- Elymus_Vcmax
+
+BetulaData <- read.csv("betula_ex.csv")
+Betula_Jmax <- ggplot(BetulaData, aes(x = T_measurement, y = Jmax)) +
+  labs(x = "Temperature (°C)",
+       y = expression(J[max]~"("*mu*mol~m^{-2}~s^{-1}*")")) +
+  geom_smooth(method = 'lm',
+              formula = y ~ Arrh_medlyn(k25 = Arrh_pars[Arrh_pars$variable.medlyn == "Jmax" &
+                                                          Arrh_pars$ID.medlyn == "Betula alleghaniensis_r3_35",]$k25.medlyn, 
+                                        delS = Arrh_pars[Arrh_pars$variable.medlyn == "Jmax" &
+                                                           Arrh_pars$ID.medlyn == "Betula alleghaniensis_r3_35",]$delS.medlyn,
+                                        Ea = Arrh_pars[Arrh_pars$variable.medlyn == "Jmax" &
+                                                         Arrh_pars$ID.medlyn == "Betula alleghaniensis_r3_35",]$Ea.medlyn,
+                                        Hd = Arrh_pars[Arrh_pars$variable.medlyn == "Jmax" &
+                                                         Arrh_pars$ID.medlyn == "Betula alleghaniensis_r3_35",]$Hd.medlyn,
+                                        Temp = x + 273.15),
+              aes(colour = "Red"), se = FALSE, size = 2,
+              show.legend = TRUE) +
+  geom_smooth(method = 'lm',
+              formula = y ~ Arrh_new(k25 = Arrh_pars[Arrh_pars$variable.new == "Jmax" &
+                                                       Arrh_pars$ID.new == "Betula alleghaniensis_r3_35",]$k25.new, 
+                                     delS = Arrh_pars[Arrh_pars$variable.new == "Jmax" &
+                                                        Arrh_pars$ID.new == "Betula alleghaniensis_r3_35",]$delS.new,
+                                     Ea = Arrh_pars[Arrh_pars$variable.new == "Jmax" &
+                                                      Arrh_pars$ID.new == "Betula alleghaniensis_r3_35",]$Ea.new,
+                                     Hd = Arrh_pars[Arrh_pars$variable.new == "Jmax" &
+                                                      Arrh_pars$ID.new == "Betula alleghaniensis_r3_35",]$Hd.new,
+                                     Temp = x + 273.15),
+              aes(colour = "Cyan"), se = FALSE, linetype = "dashed",
+              size = 2, show.legend = TRUE) +
+  scale_colour_manual(values = c("Red", "Cyan"),
+                      labels = c("Eq. 3", "Eq. 10")) +
+  geom_point(size = 3)+
+  theme_bw() +
+  theme(panel.grid = element_blank())+
+  theme(legend.position = 'bottom',
+        legend.title = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))
+Betula_Jmax
+F <- Betula_Jmax
+
+Betula_Vcmax <- ggplot(BetulaData, aes(x = T_measurement, y = Vcmax)) +
+  labs(x = "Temperature (°C)",
+       y = expression(V[cmax]~"("*mu*mol~m^{-2}~s^{-1}*")")) +
+  geom_smooth(method = 'lm',
+              formula = y ~ Arrh_medlyn(k25 = Arrh_pars[Arrh_pars$variable.medlyn == "Vcmax" &
+                                                          Arrh_pars$ID.medlyn == "Betula alleghaniensis_r3_35",]$k25.medlyn, 
+                                        delS = Arrh_pars[Arrh_pars$variable.medlyn == "Vcmax" &
+                                                           Arrh_pars$ID.medlyn == "Betula alleghaniensis_r3_35",]$delS.medlyn,
+                                        Ea = Arrh_pars[Arrh_pars$variable.medlyn == "Vcmax" &
+                                                         Arrh_pars$ID.medlyn == "Betula alleghaniensis_r3_35",]$Ea.medlyn,
+                                        Hd = Arrh_pars[Arrh_pars$variable.medlyn == "Vcmax" &
+                                                         Arrh_pars$ID.medlyn == "Betula alleghaniensis_r3_35",]$Hd.medlyn,
+                                        Temp = x + 273.15),
+              aes(colour = "Red"), se = FALSE, size = 2,
+              show.legend = TRUE) +
+  geom_smooth(method = 'lm',
+              formula = y ~ Arrh_new(k25 = Arrh_pars[Arrh_pars$variable.new == "Vcmax" &
+                                                       Arrh_pars$ID.new == "Betula alleghaniensis_r3_35",]$k25.new, 
+                                     delS = Arrh_pars[Arrh_pars$variable.new == "Vcmax" &
+                                                        Arrh_pars$ID.new == "Betula alleghaniensis_r3_35",]$delS.new,
+                                     Ea = Arrh_pars[Arrh_pars$variable.new == "Vcmax" &
+                                                      Arrh_pars$ID.new == "Betula alleghaniensis_r3_35",]$Ea.new,
+                                     Hd = Arrh_pars[Arrh_pars$variable.new == "Vcmax" &
+                                                      Arrh_pars$ID.new == "Betula alleghaniensis_r3_35",]$Hd.new,
+                                     Temp = x + 273.15),
+              aes(colour = "Cyan"), se = FALSE, linetype = "dashed",
+              size = 2, show.legend = TRUE) +
+  scale_colour_manual(values = c("Red", "Cyan"),
+                      labels = c("Eq. 3", "Eq. 10")) +
+  geom_point(size = 3)+
+  theme_bw() +
+  theme(panel.grid = element_blank())+
+  theme(legend.position = 'bottom',
+        legend.title = element_blank())+
+  theme(text = element_text(size = 12, colour = "Black"),
+        axis.line=element_line(size=1), axis.ticks=element_line(size=1.5),
+        axis.ticks.length=unit(1.5, "mm"), rect=element_rect(size=2))
+Betula_Vcmax
+E <- Betula_Vcmax
+
+gA <- ggplotGrob(A)  
+gB <- ggplotGrob(B)
+gC <- ggplotGrob(C)
+gD <- ggplotGrob(D)
+gE <- ggplotGrob(E)
+gF <- ggplotGrob(F)
+
+# Arrange the four charts
+grid.arrange(gA, gB, gC, gD, gE, gF, ncol=2, nrow=3)
+
+# Combine the plots   
+g = cbind(rbind(gA, gC, gE, size = "last"), rbind(gB, gD, gF, size = "last"), size = "first")
+
+# draw it
+jpeg("Joe-Figure2.jpeg", width = 18, height = 26, units = "cm", res = 600)
+grid.newpage()
+grid.draw(g)
+dev.off()
+
+        
+```

@@ -3,9 +3,13 @@ title: "Env_data_figs"
 author: "Joseph R. Stinziano"
 date: "27/01/2020"
 output: html_document
+vignette: >
+ %\VignetteIndexEntry{Env_data_figs}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
 ---
 
-#```{r include = FALSE}
+```{r include = FALSE}
 ABQ2 <- read.csv(system.file("extdata", "env_data_ABQ_2.csv", 
                              package = "arrhenius.comparison"),
                  stringsAsFactors = FALSE)

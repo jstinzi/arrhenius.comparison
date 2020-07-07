@@ -1,0 +1,947 @@
+---
+title: "Temperature Response Fitting"
+author: "Joseph R. Stinziano"
+date: "18/03/2020"
+output: html_document
+vignette: >
+ %\VignetteIndexEntry{Temperature_ _Response_ _Fitting}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
+---
+Working directory needs to contain all ACi files from Kumarathunge et al. 2019
+```{r}
+library(arrhenius.comparison)
+library(ggplot2)
+library(tidyr)
+library(minpack.lm)
+```
+
+```{r}
+files <- list.files(pattern = ".csv")
+for (i in length(files):1){
+  if(files[i] == "compiled_t_fits_wide.csv" |
+     files[i] == "compiled_t_fits_long.csv"){
+    files[i] <- NA
+  }
+}
+
+files <- files[is.na(files) == FALSE]
+
+data <- vector("list", length(files))
+for(i in 1:length(data)){
+  data[[i]] <- read.csv(files[i], stringsAsFactors = FALSE)
+  data[[i]]$file <- files[i]
+  names(data)[i] <- files[i]
+}
+
+outputs <- vector("list", length(data))
+```
+
+```{r}
+#1
+dat <- data[[1]]
+dat <- unite(dat, col = "ID", c("Species", "Temp_Treatment", "Season"),
+             sep = "_")
+dat <- dat[, 3:13]
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_smooth()
+data[[1]] <- dat
+
+#2
+dat <- data[[2]]
+dat <- unite(dat, col = "ID", c("species", "date"), sep = "_")
+dat <- dat[, c(2, 5:14)]
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[2]] <- dat
+
+#3
+dat <- data[[3]]
+dat <- unite(dat, col = "ID", c("Species", "Season"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[3]] <- dat
+
+#4
+dat <- data[[4]]
+#dat <- unite(dat, col = "ID", c("Species", "Season"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[4]] <- dat
+
+#5
+dat <- data[[5]]
+#dat <- unite(dat, col = "ID", c("Species", "Season"), sep = "_")
+dat <- dat[, c(2, 5:14)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[5]] <- dat
+
+#6
+dat <- data[[6]]
+dat <- unite(dat, col = "ID", c("nameSp",
+                                "Warm.trt"), sep = "_")
+dat <- dat[, c(2, 6:15)]
+#colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[6]] <- dat
+######ISSUE T_measurement missing!
+#7
+dat <- data[[7]]
+dat <- unite(dat, col = "ID", c("Species",
+                                "Season"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+#colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[7]] <- dat
+
+#8
+dat <- data[[8]]
+dat <- unite(dat, col = "ID", c("Species",
+                                "Season"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+#colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[8]] <- dat
+
+#9
+dat <- data[[9]]
+dat <- separate(dat, col = "Species", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Season"), sep = "_")
+dat <- dat[, c(2, 5:14)]
+#colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[9]] <- dat
+
+#####ISSUE - low number of points, may need to group
+#10
+dat <- data[[10]]
+#dat <- separate(dat, col = "Species", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Leaf"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+#colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[10]] <- dat
+
+#11
+dat <- data[[11]]
+#dat <- separate(dat, col = "Species", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Season"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+#colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[11]] <- dat
+
+#12
+dat <- data[[12]]
+#dat <- separate(dat, col = "Species", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species",
+#                                "Season"), sep = "_")
+dat$Curve <- "euc_pauciflora"
+dat <- dat[, c(2:12)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[12]] <- dat
+
+#13
+dat <- data[[13]]
+dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Tree"), sep = "_")
+dat <- dat[, c(2, 5:14)]
+#colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[13]] <- dat
+
+#14
+dat <- data[[14]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Temp"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+#colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[14]] <- dat
+
+#15
+dat <- data[[15]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Provenance",
+                                "Replicate"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+#colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[15]] <- dat
+
+#16
+dat <- data[[16]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Provenance",
+#                                "Replicate"), sep = "_")
+dat <- dat[, c(2, 5:14)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[16]] <- dat
+
+#17
+dat <- data[[17]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Povanance",
+                                "Replicate"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[17]] <- dat
+
+#18
+dat <- data[[18]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Povanance",
+#                                "Replicate"), sep = "_")
+dat <- dat[, c(5:15)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[18]] <- dat
+
+
+#19
+dat <- data[[19]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Spp",
+                                "Season"), sep = "_")
+dat <- dat[, c(3, 5:14)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[19]] <- dat
+
+#20
+dat <- data[[20]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Season"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[20]] <- dat
+
+#21
+dat <- data[[21]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Month"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[21]] <- dat
+
+#22
+dat <- data[[22]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Year",
+                                "Month"), sep = "_")
+dat <- dat[, c(3, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[22]] <- dat
+
+#23
+dat <- data[[23]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Plant.ID"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[23]] <- dat
+
+#24
+dat <- data[[24]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Season"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[24]] <- dat
+
+#25
+dat <- data[[25]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Plant.ID"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[25]] <- dat
+
+#26
+dat <- data[[26]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species",
+                                "Replicate",
+                                "T_growth"), sep = "_")
+dat <- dat[, c(2:12)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[26]] <- dat
+
+#27
+dat <- data[[27]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species",
+#                                "Replicate",
+#                                "T_growth"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[27]] <- dat
+
+#28
+dat <- data[[28]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species",
+#                                "Replicate",
+#                                "T_growth"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[28]] <- dat
+
+#29
+dat <- data[[29]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species",
+#                                "Replicate",
+#                                "T_growth"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[29]] <- dat
+
+#30
+dat <- data[[30]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species",
+#                                "Replicate",
+#                                "T_growth"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[30]] <- dat
+
+#31
+dat <- data[[31]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species",
+#                                "Replicate",
+#                                "T_growth"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[31]] <- dat
+
+#32
+dat <- data[[32]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species",
+#                                "Replicate",
+#                                "T_growth"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[32]] <- dat
+
+#33
+dat <- data[[33]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("species",
+                                "Shoot"), sep = "_")
+dat <- dat[, c(2:12)]
+colnames(dat) <- c("ID", "T_measurement", colnames(dat)[3:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[33]] <- dat
+
+#34
+dat <- data[[34]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species",
+#                                "Replicate",
+#                                "T_growth"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[34]] <- dat
+
+#####ISSUE ONLY 1 TEMP MEASUREMENT
+#35 
+dat <- data[[35]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species", "Rep"), sep = "_")
+dat <- dat[, c(2:12)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[35]] <- dat
+
+#36 
+dat <- data[[36]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species", "Rep"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[36]] <- dat
+
+
+#37 
+dat <- data[[37]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species", "Rep"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[37]] <- dat
+
+#38 
+dat <- data[[38]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species", "Season"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[38]] <- dat
+
+#39 
+dat <- data[[39]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species", "Month", "Site"), sep = "_")
+dat <- dat[, c(3:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[39]] <- dat
+
+#40 
+dat <- data[[40]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species", "Month", "Site"), sep = "_")
+dat <- dat[, c(3, 5:14)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[40]] <- dat
+
+#41 
+dat <- data[[41]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+#dat <- unite(dat, col = "ID", c("Species", "Month", "Site"), sep = "_")
+dat <- dat[, c(2:12)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+dat$ID <- dat$file
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[41]] <- dat
+
+#42 
+dat <- data[[42]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Season", "Chamber",
+                                "CO2_Treat", "Water_treat"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[42]] <- dat
+
+#43 
+dat <- data[[43]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Chamber",
+                                "Temp.treat"), sep = "_")
+dat <- dat[, c(3:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[43]] <- dat
+
+#44 
+dat <- data[[44]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Species", "Treatment",
+                                "Chamber"), sep = "_")
+dat <- dat[, c(2, 4:13)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[44]] <- dat
+
+#####ISSUE - very few points
+#45 
+dat <- data[[45]]
+#dat <- separate(dat, col = "Name", into = c("Species", "extra"), sep = "-")
+dat <- unite(dat, col = "ID", c("Season", "Ttreatment",
+                                "Chamber"), sep = "_")
+dat <- dat[, c(2:12)]
+colnames(dat) <- c("ID", colnames(dat)[2:11])
+ggplot(dat, aes(x = T_measurement, y = Vcmax, colour = ID)) +
+  geom_point()
+data[[45]] <- dat
+
+data <- do.call("rbind", data)
+
+data <- data[data$Jmax < 10000 &
+               data$Vcmax < 400 &
+               data$Vcmax > 1 &
+               data$Jmax > 1 &
+               #data$TPU > 0 &
+               is.na(data$Vcmax) == FALSE, ]
+
+data2 <- split(data, data$ID)
+
+for(i in length(data2):1){
+  if(nrow(data2[[i]]) < 5){
+    data2[[i]] <- NULL
+  }
+}
+
+gc()
+
+simexample <- data2[[89]]
+difexample <- data2[[109]]
+difexample2 <- data2[[155]]
+
+c <- ggplot(simexample, aes(x = T_measurement, y = Vcmax)) +
+  geom_point() +
+  theme_bw()
+```
+
+```{r}
+
+#Need to make framework to fit all these curves...
+output_medlyn <- vector("list", length(data2))
+output_new <- vector("list", length(data2))
+
+
+for(i in 1:length(data2)){
+  #issue with 26, 34, 44, 47, 57, 58, 69, 73, 78
+  #mod_v <- nlsLm(Vcmax ~ Arrh_base(k25, Ea, Temp = T_measurement),
+  #               data = data[[i]])
+  #mod_j <- nlsLm(Vcmax ~ Arrh_base(k25, Ea, Temp = T_measurement),
+  #               data = data[[i]])
+  tryCatch(output_medlyn[[i]][[1]] <- 
+    fit_medlyn(data = data2[[i]],
+                 varnames = list(k = "Vcmax",
+                                 Temp = "T_measurement")),
+             error = function(e) paste(NA))
+  tryCatch(output_medlyn[[i]][[2]] <- 
+    fit_medlyn(data = data2[[i]],
+                 varnames = list(k = "Jmax",
+                                 Temp = "T_measurement")),
+             error = function(e) paste(NA))
+  tryCatch(output_medlyn[[i]][[3]] <- data2[[i]],
+             error = function(e) paste(NA))
+  print(i)
+}
+gc()
+
+for(i in 1:length(data2)){
+  #issue with 26, 34, 44, 47, 57, 58, 69, 73, 78
+  #mod_v <- nlsLm(Vcmax ~ Arrh_base(k25, Ea, Temp = T_measurement),
+  #               data = data[[i]])
+  #mod_j <- nlsLm(Vcmax ~ Arrh_base(k25, Ea, Temp = T_measurement),
+  #               data = data[[i]])
+  tryCatch(output_new[[i]][[1]] <- 
+    fit_new(data = data2[[i]],
+                 varnames = list(k = "Vcmax",
+                                 Temp = "T_measurement")),
+             error = function(e) paste(NA))
+  tryCatch(output_new[[i]][[2]] <- 
+    fit_new(data = data2[[i]],
+                 varnames = list(k = "Jmax",
+                                 Temp = "T_measurement")),
+             error = function(e) paste(NA))
+  tryCatch(output_new[[i]][[3]] <- data2[[i]],
+             error = function(e) paste(NA))
+  print(i)
+}
+gc()
+```
+Need residuals, BIC, k25, Ea, delS, Hd for Vcmax, Jmax, new and old
+```{r}
+extract_medlyn <- data.frame(cbind(rep(NA, 2),#ID
+                            rep(NA, 2),#filename
+                            c("Vcmax", "Jmax"),#variable
+                            rep("Medlyn", 2),#model
+                            rep(NA, 2),#deviance
+                            rep(NA, 2),#numIter
+                            rep(NA, 2),#BIC
+                            rep(NA, 2),#k25
+                            rep(NA, 2),#Ea
+                            rep(NA, 2),#delS
+                            rep(NA, 2),#Hd
+                            rep(NA, 2),#minT
+                            rep(NA, 2),#maxT
+                            rep(NA, 2)
+                            ))
+colnames(extract_medlyn) <- c("ID", "file", "variable", "model",
+                       "deviance_SS", "numIter", "BIC",
+                       "k25", "Ea", "delS", "Hd",
+                       "minT", "maxT", "AIC")
+for(i in 5:length(extract_medlyn)){
+  extract_medlyn[ , i] <- as.numeric(extract_medlyn[ , i])
+}
+for(i in 1:4){
+  extract_medlyn[ , i] <- as.character(extract_medlyn[ , i])
+}
+
+model_sum <- vector("list", length(output_medlyn))
+
+for (i in 1:length(model_sum)){
+  model_sum[[i]] <- extract_medlyn
+  try(model_sum[[i]]$ID <- output_medlyn[[i]][[3]]$ID[1])
+  try(model_sum[[i]]$file <- output_medlyn[[i]][[3]]$file[1])
+  try(model_sum[[i]]$deviance_SS[1] <- output_medlyn[[i]][[1]]$m$deviance())
+  try(model_sum[[i]]$deviance_SS[2] <- output_medlyn[[i]][[2]]$m$deviance())
+  try(model_sum[[i]]$numIter[1] <- output_medlyn[[i]][[1]]$convInfo$finIter)
+  try(model_sum[[i]]$numIter[2] <- output_medlyn[[i]][[2]]$convInfo$finIter)
+  try(model_sum[[i]]$BIC[1] <- BIC(output_medlyn[[i]][[1]]))
+  try(model_sum[[i]]$BIC[2] <- BIC(output_medlyn[[i]][[2]]))
+  try(model_sum[[i]]$k25[1] <- coef(output_medlyn[[i]][[1]])[[1]])
+  try(model_sum[[i]]$k25[2] <- coef(output_medlyn[[i]][[2]])[[1]])
+  try(model_sum[[i]]$Ea[1] <- coef(output_medlyn[[i]][[1]])[[2]])
+  try(model_sum[[i]]$Ea[2] <- coef(output_medlyn[[i]][[2]])[[2]])
+  try(model_sum[[i]]$delS[1] <- coef(output_medlyn[[i]][[1]])[[3]])
+  try(model_sum[[i]]$delS[2] <- coef(output_medlyn[[i]][[2]])[[3]])
+  try(model_sum[[i]]$Hd[1] <- coef(output_medlyn[[i]][[1]])[[4]])
+  try(model_sum[[i]]$Hd[2] <- coef(output_medlyn[[i]][[2]])[[4]])
+  try(model_sum[[i]]$minT <- min(output_medlyn[[i]][[3]]$T_measurement))
+  try(model_sum[[i]]$maxT <- max(output_medlyn[[i]][[3]]$T_measurement))
+  try(model_sum[[i]]$AIC[1] <- AIC(output_medlyn[[i]][[1]]))
+  try(model_sum[[i]]$AIC[2] <- AIC(output_medlyn[[i]][[2]]))
+}
+
+model_medlyn <- do.call("rbind", model_sum)
+
+remove(model_sum)
+
+extract_new <- data.frame(cbind(rep(NA, 2),#ID
+                            rep(NA, 2),#filename
+                            c("Vcmax", "Jmax"),#variable
+                            rep("New", 2),#model
+                            rep(NA, 2),#deviance
+                            rep(NA, 2),#numIter
+                            rep(NA, 2),#BIC
+                            rep(NA, 2),#k25
+                            rep(NA, 2),#Ea
+                            rep(NA, 2),#delS
+                            rep(NA, 2),#Hd
+                            rep(NA, 2),#minT
+                            rep(NA, 2), #maxT
+                            rep(NA, 2)
+                            ))
+colnames(extract_new) <- c("ID", "file", "variable", "model",
+                       "deviance_SS", "numIter", "BIC",
+                       "k25", "Ea", "delS", "Hd",
+                       "minT", "maxT", "AIC")
+for(i in 5:length(extract_new)){
+  extract_new[ , i] <- as.numeric(extract_new[ , i])
+}
+for(i in 1:4){
+  extract_new[ , i] <- as.character(extract_new[ , i])
+}
+
+model_sum <- vector("list", length(output_new))
+
+for (i in 1:length(model_sum)){
+  model_sum[[i]] <- extract_new
+  try(model_sum[[i]]$ID <- output_new[[i]][[3]]$ID[1])
+  try(model_sum[[i]]$file <- output_new[[i]][[3]]$file[1])
+  try(model_sum[[i]]$deviance_SS[1] <- output_new[[i]][[1]]$m$deviance())
+  try(model_sum[[i]]$deviance_SS[2] <- output_new[[i]][[2]]$m$deviance())
+  try(model_sum[[i]]$numIter[1] <- output_new[[i]][[1]]$convInfo$finIter)
+  try(model_sum[[i]]$numIter[2] <- output_new[[i]][[2]]$convInfo$finIter)
+  try(model_sum[[i]]$BIC[1] <- BIC(output_new[[i]][[1]]))
+  try(model_sum[[i]]$BIC[2] <- BIC(output_new[[i]][[2]]))
+  try(model_sum[[i]]$k25[1] <- coef(output_new[[i]][[1]])[[1]])
+  try(model_sum[[i]]$k25[2] <- coef(output_new[[i]][[2]])[[1]])
+  try(model_sum[[i]]$Ea[1] <- coef(output_new[[i]][[1]])[[2]])
+  try(model_sum[[i]]$Ea[2] <- coef(output_new[[i]][[2]])[[2]])
+  try(model_sum[[i]]$delS[1] <- coef(output_new[[i]][[1]])[[3]])
+  try(model_sum[[i]]$delS[2] <- coef(output_new[[i]][[2]])[[3]])
+  try(model_sum[[i]]$Hd[1] <- coef(output_new[[i]][[1]])[[4]])
+  try(model_sum[[i]]$Hd[2] <- coef(output_new[[i]][[2]])[[4]])
+  try(model_sum[[i]]$minT <- min(output_new[[i]][[3]]$T_measurement))
+  try(model_sum[[i]]$maxT <- max(output_new[[i]][[3]]$T_measurement))
+  try(model_sum[[i]]$AIC[1] <- AIC(output_new[[i]][[1]]))
+  try(model_sum[[i]]$AIC[2] <- AIC(output_new[[i]][[2]]))
+}
+
+model_new <- do.call("rbind", model_sum)
+
+alldata <- rbind(model_medlyn, model_new)
+alldata_wide <- cbind(model_medlyn, model_new)
+
+colnames(alldata_wide) <- 
+  c("ID.medlyn", "file.medlyn", "variable.medlyn", "model.medlyn",
+                       "deviance_SS.medlyn", "numIter.medlyn", "BIC.medlyn",
+                       "k25.medlyn", "Ea.medlyn", "delS.medlyn", "Hd.medlyn",
+                       "minT.medlyn", "maxT.medlyn", "AIC.medlyn",
+                       "ID.new", "file.new", "variable.new", "model.new",
+                       "deviance_SS.new", "numIter.new", "BIC.new",
+                       "k25.new", "Ea.new", "delS.new", "Hd.new",
+                       "minT.new", "maxT.new", "AIC.new")
+
+write.csv(alldata, "compiled_t_fits_long.csv")
+write.csv(alldata_wide, "compiled_t_fits_wide.csv")
+
+graph_pars_v <- alldata_wide[alldata_wide$variable.medlyn == "Vcmax", ]
+graph_pars_j <- alldata_wide[alldata_wide$variable.medlyn == "Jmax", ]
+library(viridis)
+pal <- viridis(n = 2)
+
+for(i in 1:length(data2)){
+  try(graph <- ggplot(data2[[i]], aes(x = T_measurement, y = Vcmax)) +
+        labs(x = "Temperature (°C)",
+             y = expression(V[cmax]~"("*mu*mol~m^{-2}~s^{-1}*")")) +
+        geom_smooth(method = 'lm',
+                    formula = y ~ Arrh_medlyn(k25 = graph_pars_v$k25.medlyn[i],
+                                              delS = graph_pars_v$delS.medlyn[i],
+                                              Ea = graph_pars_v$Ea.medlyn[i],
+                                              Hd = graph_pars_v$Hd.medlyn[i],
+                                              Temp = x + 273.15),
+                    aes(colour = pal[1]), se = FALSE, size = 2,
+                    show.legend = TRUE) +
+        geom_smooth(method = 'lm',
+                    formula = y ~ Arrh_new(k25 = graph_pars_v$k25.new[i],
+                                              delS = graph_pars_v$delS.new[i],
+                                              Ea = graph_pars_v$Ea.new[i],
+                                              Hd = graph_pars_v$Hd.new[i],
+                                              Temp = x + 273.15),
+                    aes(colour = pal[2]), se = FALSE, linetype = "dashed",
+                    size = 2, show.legend = TRUE) +
+        scale_colour_manual(values = c("Red", "Cyan"),
+                            labels = c("Medlyn", "New")) +
+        geom_point() +
+        theme_bw() +
+        theme(legend.position = 'bottom',
+              legend.title = element_blank()))
+  jpeg(filename = paste0(i, "_",
+                             graph_pars_v$file.medlyn[i],
+                             "_Vcmax", ".jpeg"),
+           height = 4, width = 4, res = 600, units = "in")
+      print(graph)
+      dev.off()
+  
+  try(graph <- ggplot(data2[[i]], aes(x = T_measurement, y = Jmax)) +
+        labs(x = "Temperature (°C)",
+             y = expression(J[max]~"("*mu*mol~m^{-2}~s^{-1}*")")) +
+        geom_smooth(method = 'lm',
+                    formula = y ~ Arrh_medlyn(k25 = graph_pars_j$k25.medlyn[i],
+                                              delS = graph_pars_j$delS.medlyn[i],
+                                              Ea = graph_pars_j$Ea.medlyn[i],
+                                              Hd = graph_pars_j$Hd.medlyn[i],
+                                              Temp = x + 273.15),
+                    aes(colour = pal[1]), se = FALSE, size = 2,
+                    show.legend = TRUE) +
+        geom_smooth(method = 'lm',
+                    formula = y ~ Arrh_new(k25 = graph_pars_j$k25.new[i],
+                                              delS = graph_pars_j$delS.new[i],
+                                              Ea = graph_pars_j$Ea.new[i],
+                                              Hd = graph_pars_j$Hd.new[i],
+                                              Temp = x + 273.15),
+                    aes(colour = pal[2]), se = FALSE, linetype = "dashed",
+                    size = 2, show.legend = TRUE) +
+        scale_colour_manual(values = c("Red", "Cyan"),
+                            labels = c("Medlyn", "New")) +
+        geom_point() +
+        theme_bw() +
+        theme(legend.position = 'bottom',
+              legend.title = element_blank()))
+  jpeg(filename = paste0(i, "_",
+                             graph_pars_j$file.medlyn[i],
+                             "_Jmax", ".jpeg"),
+           height = 4, width = 4, res = 600, units = "in")
+      print(graph)
+      dev.off()
+}
+
+
+getwd()
+#run filter below first
+#number successful medlyn curves
+nrow(alldata_wide[is.na(alldata_wide$k25.medlyn) == FALSE &
+                    alldata_wide$variable.medlyn == "Vcmax" &
+                    alldata_wide$Hd.medlyn < 5000 &
+                    alldata_wide$Ea.medlyn > 0 &
+                    alldata_wide$delS.medlyn > 0 &
+                    alldata_wide$Hd.medlyn > 0,])
+nrow(alldata_wide[is.na(alldata_wide$k25.medlyn) == FALSE &
+                    alldata_wide$variable.medlyn == "Jmax" &
+                    alldata_wide$Hd.medlyn < 5000 &
+                    alldata_wide$Ea.medlyn > 0 &
+                    alldata_wide$delS.medlyn > 0 &
+                    alldata_wide$Hd.medlyn > 0,])
+#number successful new curves
+nrow(alldata_wide[is.na(alldata_wide$k25.new) == FALSE &
+                    alldata_wide$variable.medlyn == "Vcmax" &
+                    alldata_wide$Hd.new < 5000 &
+                    alldata_wide$Ea.new > 0 &
+                    alldata_wide$delS.new > 0 &
+                    alldata_wide$Hd.new > 0,])
+nrow(alldata_wide[is.na(alldata_wide$k25.new) == FALSE &
+                    alldata_wide$variable.medlyn == "Jmax"&
+                    alldata_wide$Hd.new < 5000 &
+                    alldata_wide$Ea.new > 0 &
+                    alldata_wide$delS.new > 0 &
+                    alldata_wide$Hd.new > 0,])
+
+nrow(alldata_wide[is.na(alldata_wide$k25.medlyn) == FALSE |
+                    is.na(alldata_wide$k25.new) == FALSE, ])
+alldata_wide <- alldata_wide[alldata_wide$Hd.medlyn < 5000 &
+                               alldata_wide$Hd.new < 5000 &
+                               alldata_wide$Ea.medlyn > 0 &
+                               alldata_wide$Ea.new > 0 &
+                               alldata_wide$delS.medlyn > 0 &
+                               alldata_wide$delS.new > 0 &
+                               alldata_wide$Hd.medlyn > 0 &
+                               alldata_wide$Hd.new > 0 &
+                               is.na(alldata_wide$k25.medlyn) == FALSE &
+                    is.na(alldata_wide$k25.new) == FALSE, ]
+
+nrow(alldata_wide[is.na(alldata_wide$k25.medlyn) == FALSE &
+                    is.na(alldata_wide$k25.new) == FALSE &
+                    alldata_wide$variable.medlyn == "Vcmax", ])
+nrow(alldata_wide[is.na(alldata_wide$k25.medlyn) == FALSE &
+                    is.na(alldata_wide$k25.new) == FALSE &
+                    alldata_wide$variable.medlyn == "Jmax", ])
+library(dplyr)
+alldata_wide_paired <- alldata_wide %>% group_by(ID.medlyn) %>%
+  filter(n() > 1)
+
+summary(lm(k25.medlyn ~ k25.new - 1,
+           alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Vcmax",]))
+
+plot(Ea.medlyn ~ Ea.new, alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Vcmax",])
+summary(lm(Ea.medlyn ~ Ea.new,
+           alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Vcmax",]))
+
+plot(delS.medlyn ~ delS.new,      alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Vcmax",])
+summary(lm(delS.medlyn ~ delS.new - 1,
+           alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Vcmax",]))
+
+plot(Hd.medlyn ~ Hd.new, alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Vcmax",])
+summary(lm(Hd.medlyn ~ Hd.new - 1, alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Vcmax",]))
+
+plot(deviance_SS.medlyn ~ deviance_SS.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Vcmax",])
+summary(lm(deviance_SS.medlyn ~ deviance_SS.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Vcmax",]))
+
+plot(numIter.medlyn ~ numIter.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Vcmax",])
+summary(lm(numIter.medlyn ~ numIter.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Vcmax",]))
+
+plot(AIC.medlyn ~ AIC.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Vcmax",])
+summary(lm(BIC.medlyn ~ BIC.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Vcmax",]))
+summary(lm(BIC.medlyn ~ BIC.new - 1, alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Vcmax",]))
+
+summary(lm(k25.medlyn ~ k25.new - 1,
+           alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Jmax",]))
+
+plot(Ea.medlyn ~ Ea.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Jmax",])
+summary(lm(Ea.medlyn ~ Ea.new,
+           alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Jmax",]))
+
+plot(delS.medlyn ~ delS.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Jmax",])
+summary(lm(delS.medlyn ~ delS.new  - 1, alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Jmax",]))
+
+plot(Hd.medlyn ~ Hd.new, alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Jmax",])
+summary(lm(Hd.medlyn ~ Hd.new, alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Jmax",]))
+
+plot(deviance_SS.medlyn ~ deviance_SS.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Jmax",])
+summary(lm(deviance_SS.medlyn ~ deviance_SS.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Jmax",]))
+
+plot(numIter.medlyn ~ numIter.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Jmax",])
+summary(lm(numIter.medlyn ~ numIter.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Jmax",]))
+
+plot(BIC.medlyn ~ BIC.new, alldata_wide[alldata_wide$variable.medlyn ==
+                                                "Jmax",])
+summary(lm(BIC.medlyn ~ BIC.new - 1, alldata_wide_paired[alldata_wide_paired$variable.medlyn ==
+                                                "Jmax",]))
+
+
+write.csv(alldata, "compiled_t_fits_long.csv")
+write.csv(alldata_wide, "compiled_t_fits_wide.csv")
+
+model_vcmax <- alldata_wide_paired[alldata_wide_paired$variable.medlyn == "Vcmax",]
+model_jmax <- alldata_wide_paired[alldata_wide_paired$variable.medlyn == "Jmax",]
+
+write.csv(model_vcmax, "fits_v_3.csv")
+write.csv(model_jmax, "fits_j_3.csv")
+
+
+for(i in c(5:13, 18:26)){
+  print(hist(alldata_wide[, i]))
+}
+```
