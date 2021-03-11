@@ -106,7 +106,7 @@ calculate_photo <- function(data_phys, #physiology dataframe
   c <- 0.5 * alpha * phi * theta * data_env$Qin[i] * data_phys$Jmax[i]
   jetr <- min( ((-b + sqrt(b ^ 2 - 4 * a * c)) / (2 * a)),
                ((-b - sqrt(b ^ 2 - 4 * a * c)) / (2 * a)))
-  Wj <- jetr * (Ci[j - 1] - data_phys$GammaStar[i]) /
+  Wj <- jetr * (1 / 4) * (Ci[j - 1] - data_phys$GammaStar[i]) /
     (2 * data_phys$GammaStar[i] + Ci[j - 1])
     
   
